@@ -6,10 +6,32 @@ const DB = "tm_surl";
 const COLLECTION = "tm_uri_mappers";
 const { MongoClient } = require("mongodb");
 
+export interface UriInfo {
+    
+    short_uri : string, 
 
-export async function obtainShortUri(long_uri : string, completion?: (err?: Error, res? : string)=>void ) : Promise<{
-    short_uri : string, long_uri : string
-}>{
+    long_uri : string
+}
+
+export async function obtainShortUriOnly(long_uri : string, completion?: (err?: Error, res? : any )=>void ) 
+{
+
+    await obtainShortUri(long_uri, (e, s)=>{
+        if ( !(e instanceof Error)) {
+
+            if (completion)
+                completion(undefined, { v: s.short_uri });
+        }
+        else {
+
+            if ( completion ) completion(e);
+        }
+    })
+
+}
+
+export async function obtainShortUri(long_uri : string, completion?: (err?: Error, res? : UriInfo)=>void ) 
+{
 
     const client = new MongoClient(MONGO_URI);
     
@@ -27,25 +49,26 @@ export async function obtainShortUri(long_uri : string, completion?: (err?: Erro
             
             let _shortUri = await shortUriStr(shortInfo);
 
-            let item = {
+            let item : UriInfo = {
                 short_uri : _shortUri,
                 long_uri : long_uri, 
             }
 
             await ss.insertOne(item, async (err? : Error, _res? : string)=> {
-                if ( completion ){
-                    completion(err, _res);
-                }
+         
                 await client.close();
+         
+                if ( completion ){
+                    completion(err, item);
+                }
             });
 
-            return item;
-        }
+        }  
+        else {
 
-
-        return shortUri;
-        
-       
+            if (completion)
+                completion(undefined, shortUri);
+        }     
 
     } 
     catch(e : any) {

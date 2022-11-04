@@ -4,7 +4,7 @@ import * as s from './ds/shortener';
 
 const completion = (res : Response, data? : any, error? : Error) =>{
 
-    if ( data === undefined) {
+    if ( data === undefined && error!== undefined) {
         res.status(400).json({error:  "Not found!", details :  error ? error.message : "404"});
     }
     else {
@@ -25,7 +25,14 @@ routes
     await s.obtainShortUri(_req.params.value, (_e, s)=>{
         completion(res,s, _e);
     });
+})
+.get(paths.SHORTEN_ITV, async (_req, res)=>{
+
+    await s.obtainShortUriOnly(_req.params.value, (_e, s)=>{
+        completion(res,s, _e);
+    });
 });
+
 
 
 
