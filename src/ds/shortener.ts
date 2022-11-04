@@ -7,7 +7,9 @@ const COLLECTION = "tm_uri_mappers";
 const { MongoClient } = require("mongodb");
 
 
-export async function obtainShortUri(long_uri : string, completion?: (err?: Error, res? : string)=>void ){
+export async function obtainShortUri(long_uri : string, completion?: (err?: Error, res? : string)=>void ) : Promise<{
+    short_uri : string, long_uri : string
+}>{
 
     const client = new MongoClient(MONGO_URI);
     
@@ -36,7 +38,12 @@ export async function obtainShortUri(long_uri : string, completion?: (err?: Erro
                 }
                 await client.close();
             });
+
+            return item;
         }
+
+
+        return shortUri;
         
        
 
