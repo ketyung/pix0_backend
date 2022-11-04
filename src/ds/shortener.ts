@@ -27,7 +27,6 @@ export async function obtainShortUriOnly(long_uri : string, completion?: (err?: 
             if ( completion ) completion(e);
         }
     })
-
 }
 
 export async function obtainShortUri(long_uri : string, completion?: (err?: Error, res? : UriInfo)=>void ) 
@@ -140,4 +139,46 @@ async function shortUriExists(short_uri : string) : Promise <any|undefined>{
     finally {
         await client.close();
     }
+}
+
+
+export async function getLongUri(short_uri : string) : Promise <any|undefined>{
+
+    const client = new MongoClient(MONGO_URI);
+
+    try 
+    {
+   
+        const database = client.db(DB);
+        const ss = database.collection(COLLECTION);
+      
+        const query = { short_uri : short_uri };
+        const s = await ss.findOne(query);
+
+        return s;
+
+    } 
+    finally {
+        await client.close();
+    }
+}
+
+export async function obtainLongUri(short_uri : string, completion?: (err?: Error, res? : any )=>void ) 
+{
+
+
+    let s = await getLongUri(short_uri);
+
+    if ( s!== null && s!== undefined) {
+    
+        if (completion)
+            completion(undefined, { v: s.long_uri });
+
+    }
+    else {
+
+        if (completion)
+            completion(new Error("No Long URI found for "+ short_uri));
+    }
+
 }

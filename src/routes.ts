@@ -31,7 +31,14 @@ routes
     await s.obtainShortUriOnly(_req.params.value, (_e, s)=>{
         completion(res,s, _e);
     });
+})
+.get(paths.LONG_U, async (_req, res)=>{
+
+    await s.obtainLongUri(_req.params.value, (_e, s)=>{
+        completion(res,s, _e);
+    });
 });
+
 
 
 
