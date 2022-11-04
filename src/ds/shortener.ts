@@ -43,7 +43,7 @@ export async function obtainShortUri(long_uri : string, completion?: (err?: Erro
     } 
     catch(e : any) {
 
-        console.error("Error::@obtainShortUri", e, new Date());
+        console.error("Error::@obtainShortUri", e.message, new Date());
         if ( completion )
             completion(e);
     }
