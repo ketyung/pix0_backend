@@ -1,4 +1,4 @@
-import { Router, Response, Request } from 'express';
+import { Router, Response} from 'express';
 import * as paths from './paths';
 import * as s from './ds/shortener';
 
