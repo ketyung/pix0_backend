@@ -1,6 +1,6 @@
 import { MONGO_URI } from "./config";
 
-const DB = "fin_superapp";
+const DB = "tm_surl";
 const COLLECTION = "tm_uri_mappers";
 const { MongoClient } = require("mongodb");
 
