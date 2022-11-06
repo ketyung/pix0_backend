@@ -86,6 +86,8 @@ export async function obtainShortUri(long_uri : string, completion?: (err?: Erro
 async function shortUriStr ( shortInfo : ShortCorrectionInfo) {
 
     let sUri = shortInfo.collectionId.title.replace(/\s+/g, '_').toLowerCase();
+    sUri = sUri.replace("'","_");
+    
     let i = 1;
     while ( await shortUriExists(sUri)) {
 
