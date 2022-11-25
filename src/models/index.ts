@@ -36,6 +36,8 @@ export enum MediaType {
     
     text = 2,
 
+    shape = 3, 
+
 }
 
 export interface Media {
