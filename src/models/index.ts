@@ -1,17 +1,27 @@
-export interface CollectionId {
+export interface Collection {
+    
+    name : string , 
 
-    title : string,
+    description : string,
 
-    owner : string,
+    layer_count : number ,
 
-    symbol : string, 
+    media : CollectionMedia[],
+    
+    created_by : string, 
+
+    date_created : Date,
+
+    date_updated : Date,
 }
 
-export interface ShortCorrectionInfo {
 
-    collectionId : CollectionId,
+export interface CollectionMedia {
 
-    templateId? : number, 
+    layer_num : number, 
 
-    icon? : string, 
+    max_num_of_media? : number, 
+    
+    values : string[],
+
 }

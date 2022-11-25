@@ -1,6 +1,6 @@
 import { Router, Response} from 'express';
 import * as paths from './paths';
-import * as s from './ds/shortener';
+import * as c from './ds/collection';
 
 const completion = (res : Response, data? : any, error? : Error) =>{
 
@@ -20,26 +20,11 @@ routes
 .get(paths.ROOT, (_req, res) => {
     return res.json({ message: 'Welcome To The REST API Endpoint', date : new Date().toLocaleString() });
 })
-.get(paths.SHORTEN_IT, async (_req, res)=>{
+.get(paths.GET_COLLECTION, async (_req, res)=>{
 
-    await s.obtainShortUri(_req.params.value, (_e, s)=>{
-        completion(res,s, _e);
-    });
-})
-.get(paths.SHORTEN_ITV, async (_req, res)=>{
-
-    await s.obtainShortUriOnly(_req.params.value, (_e, s)=>{
-        completion(res,s, _e);
-    });
-})
-.get(paths.LONG_U, async (_req, res)=>{
-
-    await s.obtainLongUri(_req.params.value, (_e, s)=>{
-        completion(res,s, _e);
-    });
+    let data  = c.getCollection(_req.params.name, _req.params.created_by);
+    completion(res, data);
 });
-
-
 
 
 
