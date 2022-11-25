@@ -18,13 +18,16 @@ export async function getCollectionsBy(created_by : string
       
         const query = { created_by : created_by };
 
-        const s = await ss
+        const rs = 
+        await ss
         .find(query)
         .skip(offset ?? 0)
         .limit(limit ?? 10)
         .toArray();
 
-        return s;
+        const t = await ss.count(query);
+
+        return {res : rs, total : t, offset : offset, limit : limit};
 
     } 
     finally {
