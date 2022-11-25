@@ -43,7 +43,7 @@ routes
 })
 .post(paths.UPDATE_COLLECTION, async (req, res)=>{
     
-    // curl -d '{"_id": "638036e50fcb88dd343481d8", "name":"The Test 22 Collection", "created_by":"ketyung@gmail.com", "media_list":[{"layer_num":0, "name":"BG0", "medias":[{"type":2,"value":"Test 1"},{"type":2,"value":"Test 2"},{"type":2,"value":"Test 3"}] }]}' -H "Content-Type: application/json" http://127.0.0.1:3333/update_collection 
+    // curl -d '{"id": "638036e50fcb88dd343481d8", "name":"The Test 33x Collection", "created_by":"ketyung@gmail.com", "media_list":[{"layer_num":0, "name":"BG0", "medias":[{"type":2,"value":"Test 1"},{"type":2,"value":"Test 2"},{"type":2,"value":"Test 3"}] }]}' -H "Content-Type: application/json" http://127.0.0.1:3333/update_collection 
 
     await c.updateCollection(req.body, (e, s)=>{
         completion(res, s, e);

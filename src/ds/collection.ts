@@ -111,7 +111,7 @@ export async function updateCollection(
         const database = client.db(DB);
         const ss = database.collection(COLLECTION);
         
-        const query = { _id : ObjectID(collection._id) };
+        const query = { _id : ObjectID(collection.id) };
        
         collection.date_updated = new Date();
         

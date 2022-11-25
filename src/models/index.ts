@@ -1,6 +1,6 @@
 export interface Collection {
     
-    _id? : string, 
+    id? : string, 
 
     name : string , 
 
