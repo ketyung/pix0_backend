@@ -17,8 +17,8 @@ export async function getCollectionsBy(created_by : string ) : Promise <any|unde
         const ss = database.collection(COLLECTION);
       
         const query = { created_by : created_by };
-        const s = await ss.find(query);
 
+        const s = await ss.find(query);
         return s;
 
     } 
