@@ -22,13 +22,14 @@ routes
 })
 .get(paths.GET_COLLECTION, async (_req, res)=>{
 
-    let data  = c.getCollection(_req.params.name, _req.params.created_by);
-    completion(res, data);
+    let data  = await  c.getCollection(_req.params.name, _req.params.created_by);
+    return res.json(data);
 })
 .get(paths.GET_COLLECTIONS_BY, async (_req, res)=>{
 
-    let data  = c.getCollectionsBy(_req.params.created_by);
-    completion(res, data);
+    let data  = await c.getCollectionsBy(_req.params.created_by);
+    return res.json(data);
+    
 })
 
 .post(paths.ADD_NEW_COLLECTION, async (req, res)=>{
