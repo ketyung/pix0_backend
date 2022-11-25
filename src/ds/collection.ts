@@ -6,7 +6,8 @@ const COLLECTION = "xnft_collection";
 const { MongoClient } = require("mongodb");
 
 
-export async function getCollectionsBy(created_by : string ) : Promise <any|undefined>{
+export async function getCollectionsBy(created_by : string
+    , offset? : number, limit? : number ) : Promise <any|undefined>{
 
     const client = new MongoClient(MONGO_URI);
 
@@ -18,7 +19,12 @@ export async function getCollectionsBy(created_by : string ) : Promise <any|unde
       
         const query = { created_by : created_by };
 
-        const s = await ss.find(query);
+        const s = await ss
+        .find(query)
+        .skip(offset ?? 0)
+        .limit(limit ?? 10)
+        .toArray();
+        
         return s;
 
     } 

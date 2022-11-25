@@ -27,7 +27,8 @@ routes
 })
 .get(paths.GET_COLLECTIONS_BY, async (_req, res)=>{
 
-    let data  = await c.getCollectionsBy(_req.params.created_by);
+    let data  = await c.getCollectionsBy(_req.params.created_by, 
+        parseInt(_req.params.offset), parseInt(_req.params.limit));
     return res.json(data);
     
 })
