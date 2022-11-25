@@ -32,7 +32,6 @@ routes
     return res.json(data);
     
 })
-
 .post(paths.ADD_NEW_COLLECTION, async (req, res)=>{
     
     // curl -d '{"name":"The Test Collection", "created_by":"ketyung@gmail.com", "media_list":[{"layer_num":0, "name":"BG0", "medias":[{"type":2,"value":"Test 1"},{"type":2,"value":"Test 2"}] }]}' -H "Content-Type: application/json" http://127.0.0.1:3333/add_collection 
@@ -41,7 +40,17 @@ routes
         completion(res, s, e);
     });
    
-});
+})
+.post(paths.UPDATE_COLLECTION, async (req, res)=>{
+    
+    // curl -d '{"_id": "638036e50fcb88dd343481d8", "name":"The Test 22 Collection", "created_by":"ketyung@gmail.com", "media_list":[{"layer_num":0, "name":"BG0", "medias":[{"type":2,"value":"Test 1"},{"type":2,"value":"Test 2"},{"type":2,"value":"Test 3"}] }]}' -H "Content-Type: application/json" http://127.0.0.1:3333/update_collection 
+
+    await c.updateCollection(req.body, (e, s)=>{
+        completion(res, s, e);
+    });
+   
+})
+;
 
 
 
