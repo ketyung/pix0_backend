@@ -1,6 +1,6 @@
 export const ROOT = "/";
 
-export const ADD_NEW_COLLECTION = "/add_collection/:value?";
+export const ADD_NEW_COLLECTION = "/add_collection/";
 
 export const GET_COLLECTION = "/collection/:name?/:created_by";
 

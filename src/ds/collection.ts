@@ -2,7 +2,7 @@ import { MONGO_URI } from "./config";
 import { Collection } from "../models";
 
 const DB = "xnft_collections";
-const COLLECTION = "xnft_quote_collection";
+const COLLECTION = "xnft_collection";
 const { MongoClient } = require("mongodb");
 
 
@@ -50,7 +50,7 @@ export async function getCollection(name : string, created_by : string ) : Promi
 }
 
 
-export async function addNewCollection(collection : Collection,
+export async function addCollection(collection : Collection,
     completion?: (err?: Error, res? : Collection)=>void){
 
 
@@ -62,8 +62,11 @@ export async function addNewCollection(collection : Collection,
         const ss = database.collection(COLLECTION);
         
         let _collection = await getCollection(collection.name, collection.created_by);
-       
-        if (_collection === null && _collection === undefined) {
+
+        if (_collection === null || _collection === undefined) {
+
+            collection.date_created = new Date();
+            collection.date_updated = collection.date_created;
 
             await ss.insertOne(collection, async (err? : Error, _res? : string)=> {
          

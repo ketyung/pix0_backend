@@ -19,8 +19,7 @@ const logger = (req : express.Request, _res : express.Response, _next : express.
 }
 
 
-const allowlist = ['http://localhost:3000', 'http://localhost:3001', 
-'https://ticketmaker.xyz','https://s.ticketmaker.xyz'];
+const allowlist = ['http://localhost:3000', 'http://localhost:3001'];
 
 const corsOptionsDelegate = (req : express.Request, callback? : ( err? : Error, options? : {origin : boolean})=> void ) => {
 
