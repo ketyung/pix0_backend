@@ -44,7 +44,7 @@ export interface Media {
 
     type : MediaType,
 
-    value : string,
+    value : string, // value can be uri or another JSON string
 
     // percentage of ocurrance
     poc? : number, 
