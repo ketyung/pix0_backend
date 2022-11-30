@@ -1,3 +1,11 @@
+export enum Category {
+
+    PFP_COLLECTION,
+
+    NICE_QUOTE_COLLECTION,
+}
+
+
 export interface Collection {
     
     id? : string, 
@@ -5,6 +13,8 @@ export interface Collection {
     name : string , 
 
     description? : string,
+
+    category? : Category,
 
     logo? : Buffer, 
 
