@@ -6,6 +6,16 @@ export enum Category {
 }
 
 
+export enum Status {
+
+    PUBLISHED = 'P',
+
+    NEW ='N', 
+
+    DEACTIVATED = 'D',
+}
+
+
 export interface Collection {
     
     id? : string, 
@@ -15,6 +25,8 @@ export interface Collection {
     description? : string,
 
     category? : Category,
+
+    status? : Status,
 
     logo? : Buffer, 
 
