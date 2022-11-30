@@ -6,6 +6,8 @@ export interface Collection {
 
     description? : string,
 
+    logo? : Buffer, 
+
     layer_count? : number ,
 
     media_list : CollectionMedia[],
@@ -38,13 +40,17 @@ export enum MediaType {
 
     shape = 3, 
 
+    data_uri = 4, 
+
 }
 
 export interface Media {
 
     type : MediaType,
 
-    value : string, // value can be uri or another JSON string
+    value? : string, // value can be uri or another JSON string
+
+    data_url? : Buffer, 
 
     // percentage of ocurrance
     poc? : number, 
