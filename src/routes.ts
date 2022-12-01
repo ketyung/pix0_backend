@@ -26,6 +26,11 @@ routes
     let data  = await  c.getCollection(_req.params.name, _req.params.created_by);
     return res.json(data);
 })
+.get(paths.GET_COLLECTION_BY_ID, async (_req, res)=>{
+
+    let data  = await c.getCollectionBy(_req.params.creator, _req.params.id);
+    return res.json(data);  
+})
 .get(paths.GET_COLLECTIONS_BY, async (_req, res)=>{
 
     let data  = await c.getCollectionsBy(_req.params.created_by, 

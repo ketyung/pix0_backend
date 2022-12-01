@@ -58,6 +58,27 @@ export async function getCollection(name : string, created_by : string ) : Promi
     }
 }
 
+export async function getCollectionBy( creator : string, id : string ) : Promise <any|undefined>{
+
+    const client = new MongoClient(MONGO_URI);
+
+    try 
+    {
+   
+        const database = client.db(DB);
+        const ss = database.collection(COLLECTION);
+      
+        const query = { _id : ObjectID(id), created_by : creator };
+        const s = await ss.findOne(query);
+
+        return s;
+
+    } 
+    finally {
+        await client.close();
+    }
+}
+
 
 export async function addCollection(collection : Collection,
     completion?: (err?: Error, res? : Collection)=>void){
@@ -135,3 +156,4 @@ export async function updateCollection(
         await client.close();
     }
 }
+
