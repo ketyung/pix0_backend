@@ -32,7 +32,6 @@ export function obtainJwtToken(user : User ) {
     if (isAllowedUser(user)) {
 
         let t = getJwtToken(user);
-        console.log("t:::", t);
         return t; 
     }
     
