@@ -1,6 +1,7 @@
 import express from 'express';
 import routes from './routes';
 import { getClientIp } from './utils';
+import { decodeJwtToken } from './utils/jwt';
 const bodyParser = require('body-parser');
 const mongoSanitize = require('express-mongo-sanitize');
 const cookieParser = require('cookie-parser');
@@ -30,6 +31,47 @@ const corsOptionsDelegate = (req : express.Request, callback? : ( err? : Error, 
   if ( callback)
     callback(undefined, corsOptions) // callback expects two parameters: error and options
 
+}
+
+
+const isValidJwtToken = (token : string) : { valid : boolean, error? : string}=>{
+
+    let list_of_toks = process.env.ALLOWED_TOKENS;
+
+    let decoded_token = decodeJwtToken(token);
+
+    if ( list_of_toks ) {
+        return { valid :(list_of_toks.indexOf(decoded_token.token) !== -1)};
+    }
+
+    return { valid : false, error :"Invalid token"};
+
+}
+
+const checkAccess = async (req : express.Request, res : express.Response, _next : express.NextFunction) =>{
+
+    if (req.headers !== undefined ) {
+
+        let token = req.headers['access_token'];
+        
+        let aTok = (token instanceof Array) ? token[0] : token;
+        
+        let valid = isValidJwtToken(aTok);
+        if ( valid.valid ) {
+            _next();
+        }
+        else {
+
+            res.status(401).json({error: "Unauthorized!", message : valid.error}).end();
+        }
+    }
+    else {
+        res.status(422).json(
+            process.env.NODE_ENV === "production" ?
+            {status : "unauthorized"} :
+            {error: "Undefined cookies!", status : "unauthorized"});
+    }
+    
 }
 
 
@@ -68,6 +110,12 @@ class App {
         this.server.use(cookieParser());
         this.server.use (logger);
         this.server.use(mongoSanitize());
+
+
+        if (process.env.REQUIRE_TO_CHECK_ACCESS) {
+            this.server.use(checkAccess);
+        }
+         
       
     }
 
