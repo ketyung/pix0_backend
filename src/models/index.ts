@@ -26,6 +26,8 @@ export interface Collection {
 
     category? : Category,
 
+    item_name_prefix? : string, 
+
     status? : Status,
 
     logo? : Buffer, 
