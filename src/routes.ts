@@ -1,6 +1,7 @@
 import { Router, Response} from 'express';
 import * as paths from './paths';
 import * as c from './ds/collection';
+import { obtainJwtToken } from './utils/jwt';
 
 const completion = (res : Response, data? : any, error? : Error) =>{
 
@@ -32,6 +33,13 @@ routes
     return res.json(data);
     
 })
+.get(paths.OBTAIN_JWT, async (_req, res)=>{
+
+    let data  = obtainJwtToken({email : _req.params.email, pass : _req.params.pass});
+    return res.json({token : data});
+    
+})
+
 .post(paths.ADD_NEW_COLLECTION, async (req, res)=>{
     
     // curl -d '{"name":"The Test Collection", "created_by":"ketyung@gmail.com", "media_list":[{"layer_num":0, "name":"BG0", "medias":[{"type":2,"value":"Test 1"},{"type":2,"value":"Test 2"}] }]}' -H "Content-Type: application/json" http://127.0.0.1:3333/add_collection 

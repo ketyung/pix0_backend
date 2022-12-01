@@ -7,3 +7,5 @@ export const GET_COLLECTION = "/collection/:name?/:created_by?";
 export const GET_COLLECTIONS_BY = "/collections/:created_by?/:offset?/:limit?";
 
 export const UPDATE_COLLECTION = "/update_collection/";
+
+export const OBTAIN_JWT = "/get_jwt/:email?/:pass?";

@@ -1,7 +1,7 @@
 import express from 'express';
 import routes from './routes';
 import { getClientIp } from './utils';
-import { decodeJwtToken } from './utils/jwt';
+import { decodeJwtToken, isAllowedUser } from './utils/jwt';
 const bodyParser = require('body-parser');
 const mongoSanitize = require('express-mongo-sanitize');
 const cookieParser = require('cookie-parser');
@@ -36,12 +36,11 @@ const corsOptionsDelegate = (req : express.Request, callback? : ( err? : Error, 
 
 const isValidJwtToken = (token : string) : { valid : boolean, error? : string}=>{
 
-    let list_of_toks = process.env.ALLOWED_TOKENS;
-
+   
     let decoded_token = decodeJwtToken(token);
 
-    if ( list_of_toks ) {
-        return { valid :(list_of_toks.indexOf(decoded_token.token) !== -1)};
+    if ( decoded_token && isAllowedUser(decoded_token.user)) {
+        return { valid : true };
     }
 
     return { valid : false, error :"Invalid token"};
@@ -49,6 +48,11 @@ const isValidJwtToken = (token : string) : { valid : boolean, error? : string}=>
 }
 
 const checkAccess = async (req : express.Request, res : express.Response, _next : express.NextFunction) =>{
+
+    if ( req.path.indexOf("get_jwt") !== -1 ) {
+        _next();
+        return;
+    }
 
     if (req.headers !== undefined ) {
 
