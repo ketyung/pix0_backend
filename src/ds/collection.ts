@@ -21,6 +21,7 @@ export async function getCollectionsBy(created_by : string
         const rs = 
         await ss
         .find(query)
+        .sort ( { date_created : -1})
         .skip(offset ?? 0)
         .limit(limit ?? 10)
         .toArray();
