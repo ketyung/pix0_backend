@@ -137,13 +137,13 @@ export async function updateCollection(
         const ss = database.collection(COLLECTION);
         
         const query = { _id : ObjectID(collection.id) };
-       
+        
         collection.date_updated = new Date();
         
         await ss.updateOne(query, { $set: collection }, async (err? : Error, _res? : string)=> {
         
             await client.close();
-        
+       
             if ( completion ){
                 completion(err, collection);
             }
