@@ -78,5 +78,18 @@ export interface Media {
 
     // percentage of ocurrance
     poc? : number, 
+
+    attributes?: MediaAttribute[],
     
+}
+
+
+export interface MediaAttribute {
+
+    trait_type : string,
+
+    value : string|number,
+    
+    display_type? : string, 
+
 }
