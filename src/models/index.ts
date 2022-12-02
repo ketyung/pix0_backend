@@ -77,6 +77,9 @@ export interface Media {
     data_url? : Buffer, 
 
     content_type? : string, 
+
+    file_name? : string, 
+
     // percentage of ocurrance
     poc? : number, 
 
