@@ -89,9 +89,9 @@ export interface Media {
 
 export interface MediaAttribute {
 
-    trait_type : string,
+    trait_type? : string,
 
-    value : string|number,
+    value? : string,
     
     display_type? : string, 
 
