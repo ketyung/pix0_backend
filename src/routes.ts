@@ -19,7 +19,8 @@ const routes = Router();
 
 routes
 .get(paths.ROOT, (_req, res) => {
-    return res.json({ message: 'Welcome To The REST API Endpoint', date : new Date().toLocaleString() });
+    return res.json({ message: 'Welcome To The REST API Endpoint Of Pix0', 
+    date : new Date().toLocaleString() });
 })
 .get(paths.GET_COLLECTION, async (_req, res)=>{
 
@@ -77,9 +78,13 @@ routes
     });
    
 })
+.get(paths.GET_COLLECTION_MEDIA_BY, async (_req, res)=>{
 
-
-;
+    let data  = await c.getCollectionMediaBy(
+        _req.params.collection_id, _req.params.created_by,
+        parseInt(_req.params.offset), parseInt(_req.params.limit));
+    return res.json(data);
+});
 
 
 
