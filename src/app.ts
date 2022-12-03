@@ -109,8 +109,8 @@ class App {
         this.server.use(cors(corsOptionsDelegate));
         this.server.use (setHeaderAccessCtrls);
         this.server.use(express.json());
-        this.server.use(bodyParser.urlencoded({ extended: true }));
-        this.server.use(bodyParser.json());
+        this.server.use(bodyParser.urlencoded({ extended: true , limit: '50mb'}));
+        this.server.use(bodyParser.json({limit: '50mb'}));
         this.server.use(cookieParser());
         this.server.use (logger);
         this.server.use(mongoSanitize());
