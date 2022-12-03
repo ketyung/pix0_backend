@@ -169,13 +169,13 @@ async function collectionExists ( collection_id : string,
     try {
    
     
-            const database = client.db(DB);
-            const ss = database.collection(COLLECTION);
-            const query = { _id : ObjectID(collection_id), created_by : created_by };
- 
-            let collection = await ss.findOne(query);
-        
-            return (collection !== null && collection !== undefined);          
+        const database = client.db(DB);
+        const ss = database.collection(COLLECTION);
+        const query = { _id : ObjectID(collection_id), created_by : created_by };
+
+        let collection = await ss.findOne(query);
+    
+        return (collection !== null && collection !== undefined);          
     }
     finally {
         await client.close();
