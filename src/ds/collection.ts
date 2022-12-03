@@ -158,13 +158,11 @@ export async function updateCollection(
  * Add a collection media to the specified collection with collection
  * id and the creator. A collection media must have a unique name within
  * the collection
- * @param collectionMedia 
- * @param collectionId 
- * @param creator 
+ * @param media - a struct of {media: CollectionMedia, collection_id : string, creator : string} 
  * @param completion 
  */
 export async function addCollectionMedia(
-    media : {collectionMedia : CollectionMedia,
+    media : {media : CollectionMedia,
     collection_id : string, 
     creator : string}, 
     completion?: (err?: Error, res? : Collection)=>void){
@@ -187,15 +185,15 @@ export async function addCollectionMedia(
 
         // check if the same name exists 
         if ( collection.media_list.filter ((m : CollectionMedia)=>{
-            m.name === media.collectionMedia.name  })[0] !== undefined) {
+            m.name === media.media.name  })[0] !== undefined) {
 
             if ( completion ){
-                completion(new Error(`Media collection ${media.collectionMedia.name} already exists!!`));
+                completion(new Error(`Media collection ${media.media.name} already exists!!`));
                 return; 
             }
         }
 
-        collection.media_list.push(media.collectionMedia);
+        collection.media_list.push(media.media);
         collection.date_updated = new Date();
         
         await ss.updateOne(query, { $set: collection }, async (err? : Error, _res? : string)=> {
@@ -217,13 +215,11 @@ export async function addCollectionMedia(
 /**
  * Update a collection media to the specified collection with collection
  * id and the creator
- * @param collectionMedia 
- * @param collectionId 
- * @param creator 
+ * @param media - a struct of {media: CollectionMedia, collection_id : string, creator : string} 
  * @param completion 
  */
  export async function updateCollectionMedia(
-    media : {collectionMedia : CollectionMedia,
+    media : {media : CollectionMedia,
     collection_id : string, 
     creator : string}, 
     completion?: (err?: Error, res? : Collection)=>void){
@@ -248,17 +244,17 @@ export async function addCollectionMedia(
         }
 
         let index = collection.media_list.findIndex( (m : CollectionMedia) => 
-        m.name == media.collectionMedia.name );
+        m.name == media.media.name );
 
         if ( index === -1 ){
 
             if ( completion) {
-                completion(new Error(`Collection media ${media.collectionMedia.name} does NOT exist!`));
+                completion(new Error(`Collection media ${media.media.name} does NOT exist!`));
                 return;
             }
         }
 
-        collection.media_list[index]= media.collectionMedia;
+        collection.media_list[index]= media.media;
         collection.date_updated = new Date();
         
         await ss.updateOne(query, { $set: collection }, async (err? : Error, _res? : string)=> {
