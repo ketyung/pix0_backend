@@ -1,5 +1,5 @@
 import { MONGO_URI } from "./config";
-import { Collection } from "../models";
+import { Collection, CollectionMedia } from "../models";
 
 const DB = "xnft_collections";
 const COLLECTION = "xnft_collection";
@@ -148,9 +148,52 @@ export async function updateCollection(
                 completion(err, collection);
             }
         });
+    }
+    finally {
+        await client.close();
+    }
+}
 
-      
+/**
+ * This method is meant for updating the collection
+ * that has a single media only
+ * @param collectionMedia 
+ * @param collectionId 
+ * @param creator 
+ * @param completion 
+ */
+export async function updateSingleCollectionMedia(
+    media : {collectionMedia : CollectionMedia,
+    collectionId : string, 
+    creator : string}, 
+    completion?: (err?: Error, res? : Collection)=>void){
 
+
+    const client = new MongoClient(MONGO_URI);
+   
+    try {
+
+        const database = client.db(DB);
+        const ss = database.collection(COLLECTION);
+        
+        const query = { _id : ObjectID(media.collectionId), created_by : media.creator };
+        
+        let collection = await ss.findOne(query);
+
+        if (collection.media_list === undefined) {
+            collection.media_list = [];
+        }
+        collection.media_list[0] = media.collectionMedia;
+        collection.date_updated = new Date();
+        
+        await ss.updateOne(query, { $set: collection }, async (err? : Error, _res? : string)=> {
+        
+            await client.close();
+       
+            if ( completion ){
+                completion(err, collection);
+            }
+        });
     }
     finally {
         await client.close();
