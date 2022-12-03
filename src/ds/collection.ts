@@ -240,9 +240,24 @@ export async function addCollectionMedia(
         let collection = await ss.findOne(query);
 
         if (collection.media_list === undefined) {
-            collection.media_list = [];
+            if ( completion) {
+                completion(new Error("No collection media, add one first!"));
+                return;
+            }
         }
-        collection.media_list.push(media.collectionMedia);
+
+        let index = collection.media_list.findIndex( (m : CollectionMedia) => 
+        m.name == media.collectionMedia.name );
+
+        if ( index === -1 ){
+
+            if ( completion) {
+                completion(new Error(`Collection media ${media.collectionMedia.name} does NOT exist!`));
+                return;
+            }
+        }
+
+        collection.media_list[index]= media.collectionMedia;
         collection.date_updated = new Date();
         
         await ss.updateOne(query, { $set: collection }, async (err? : Error, _res? : string)=> {
