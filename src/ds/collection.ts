@@ -3,6 +3,8 @@ import { Collection, CollectionMedia } from "../models";
 
 const DB = "xnft_collections";
 const COLLECTION = "xnft_collection";
+const COLLECTION_MEDIA = "xnft_collection_media";
+
 const { MongoClient, ObjectID } = require("mongodb");
 
 export async function getCollectionsBy(created_by : string
@@ -154,6 +156,60 @@ export async function updateCollection(
     }
 }
 
+
+/*
+ * Internal method for checking if a collection exists
+ * by the specified id and the creator
+*/
+async function collectionExists ( collection_id : string, 
+    created_by : string ): Promise<boolean>{
+    
+    const client = new MongoClient(MONGO_URI);
+  
+    try {
+   
+    
+            const database = client.db(DB);
+            const ss = database.collection(COLLECTION);
+            const query = { _id : ObjectID(collection_id), created_by : created_by };
+ 
+            let collection = await ss.findOne(query);
+        
+            return (collection !== null && collection !== undefined);          
+    }
+    finally {
+        await client.close();
+    }
+    
+}
+
+/*
+ * Internal method for checking if a collection exists
+ * by the specified id and the creator
+*/
+async function collectionMediaExists ( collection_id : string, 
+    name : string ): Promise<boolean>{
+    
+    const client = new MongoClient(MONGO_URI);
+  
+    try {
+   
+    
+            const database = client.db(DB);
+            const ss = database.collection(COLLECTION_MEDIA);
+            const query = { collection_id : collection_id, name : name  };
+ 
+            let media = await ss.findOne(query);
+        
+            return (media !== null && media !== undefined);          
+    }
+    finally {
+        await client.close();
+    }
+    
+}
+
+ 
 /**
  * Add a collection media to the specified collection with collection
  * id and the creator. A collection media must have a unique name within
@@ -165,7 +221,7 @@ export async function addCollectionMedia(
     media : {media : CollectionMedia,
     collection_id : string, 
     creator : string}, 
-    completion?: (err?: Error, res? : Collection)=>void){
+    completion?: (err?: Error, res? : CollectionMedia)=>void){
 
 
     const client = new MongoClient(MONGO_URI);
@@ -175,17 +231,19 @@ export async function addCollectionMedia(
         const database = client.db(DB);
         const ss = database.collection(COLLECTION);
         
-        const query = { _id : ObjectID(media.collection_id), created_by : media.creator };
-        
-        let collection = await ss.findOne(query);
+        if ( !await collectionExists(media.collection_id, media.creator)) {
 
-        if (collection.media_list === undefined) {
-            collection.media_list = [];
+            if ( completion ) {
+
+                completion(new Error(`The specified collection does NOT exist`));
+                return;
+            }
         }
 
+
+       
         // check if the same name exists 
-        if ( collection.media_list.filter ((m : CollectionMedia)=>{
-            m.name === media.media.name  })[0] !== undefined) {
+        if ( await collectionMediaExists(media.collection_id, media.media.name)) {
 
             if ( completion ){
                 completion(new Error(`Media collection ${media.media.name} already exists!!`));
@@ -193,17 +251,22 @@ export async function addCollectionMedia(
             }
         }
 
-        collection.media_list.push(media.media);
-        collection.date_updated = new Date();
-        
-        await ss.updateOne(query, { $set: collection }, async (err? : Error, _res? : string)=> {
-        
+        let _media = media.media;
+        _media.collection_id = media.collection_id;
+        _media.created_by = media.creator;
+        _media.date_created = new Date();
+        _media.date_updated = new Date();
+
+
+        await ss.insertOne(_media, async (err? : Error, _res? : string)=> {
+         
             await client.close();
-       
+     
             if ( completion ){
-                completion(err, collection);
+                completion(err, _media);
             }
         });
+
     }
     finally {
         await client.close();
@@ -222,51 +285,52 @@ export async function addCollectionMedia(
     media : {media : CollectionMedia,
     collection_id : string, 
     creator : string}, 
-    completion?: (err?: Error, res? : Collection)=>void){
+    completion?: (err?: Error, res? : CollectionMedia)=>void){
 
 
     const client = new MongoClient(MONGO_URI);
-   
+
     try {
 
         const database = client.db(DB);
         const ss = database.collection(COLLECTION);
         
-        const query = { _id : ObjectID(media.collection_id), created_by : media.creator };
-        
-        let collection = await ss.findOne(query);
+        if ( !await collectionExists(media.collection_id, media.creator)) {
 
-        if (collection.media_list === undefined) {
-            if ( completion) {
-                completion(new Error("No collection media, add one first!"));
+            if ( completion ) {
+
+                completion(new Error(`The specified collection does NOT exist`));
                 return;
             }
         }
 
-        let index = collection.media_list.findIndex( (m : CollectionMedia) => 
-        m.name == media.media.name );
+        
+        if ( !await collectionMediaExists(media.collection_id, media.media.name)) {
 
-        if ( index === -1 ){
-
-            if ( completion) {
-                completion(new Error(`Collection media ${media.media.name} does NOT exist!`));
-                return;
+            if ( completion ){
+                completion(new Error(`Media collection ${media.media.name} does NOT exist!!`));
+                return; 
             }
         }
 
-        collection.media_list[index]= media.media;
-        collection.date_updated = new Date();
+        let _media = media.media;
+        _media.date_updated = new Date();
+
+        const query = { collection_id : media.collection_id , name : media.media.name,
+        created_by : media.creator };
         
-        await ss.updateOne(query, { $set: collection }, async (err? : Error, _res? : string)=> {
+
+        await ss.updateOne(query, { $set: _media }, async (err? : Error, _res? : string)=> {
         
             await client.close();
        
             if ( completion ){
-                completion(err, collection);
+                completion(err, _media);
             }
         });
     }
     finally {
         await client.close();
     }
+
 }

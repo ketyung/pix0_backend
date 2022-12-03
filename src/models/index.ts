@@ -46,13 +46,21 @@ export interface Collection {
 
 export interface CollectionMedia {
 
+    collection_id : string, 
+
     name : string, 
+
+    created_by? : string, 
 
     layer_num : number, 
 
     max_num_of_media? : number, 
     
     medias : Media[],
+
+    date_created? : Date,
+
+    date_updated? : Date,
 
 }
 
