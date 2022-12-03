@@ -63,6 +63,22 @@ routes
     });
    
 })
+.post(paths.ADD_COLLECTION_MEDIA, async (req, res)=>{
+    
+    await c.addCollectionMedia(req.body, (e, s)=>{
+        completion(res, s, e);
+    });
+   
+})
+.post(paths.UPDATE_COLLECTION_MEDIA, async (req, res)=>{
+    
+    await c.updateCollectionMedia(req.body, (e, s)=>{
+        completion(res, s, e);
+    });
+   
+})
+
+
 ;
 
 

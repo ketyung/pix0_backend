@@ -165,7 +165,7 @@ export async function updateCollection(
  */
 export async function addCollectionMedia(
     media : {collectionMedia : CollectionMedia,
-    collectionId : string, 
+    collection_id : string, 
     creator : string}, 
     completion?: (err?: Error, res? : Collection)=>void){
 
@@ -177,7 +177,7 @@ export async function addCollectionMedia(
         const database = client.db(DB);
         const ss = database.collection(COLLECTION);
         
-        const query = { _id : ObjectID(media.collectionId), created_by : media.creator };
+        const query = { _id : ObjectID(media.collection_id), created_by : media.creator };
         
         let collection = await ss.findOne(query);
 
@@ -224,7 +224,7 @@ export async function addCollectionMedia(
  */
  export async function updateCollectionMedia(
     media : {collectionMedia : CollectionMedia,
-    collectionId : string, 
+    collection_id : string, 
     creator : string}, 
     completion?: (err?: Error, res? : Collection)=>void){
 
@@ -236,7 +236,7 @@ export async function addCollectionMedia(
         const database = client.db(DB);
         const ss = database.collection(COLLECTION);
         
-        const query = { _id : ObjectID(media.collectionId), created_by : media.creator };
+        const query = { _id : ObjectID(media.collection_id), created_by : media.creator };
         
         let collection = await ss.findOne(query);
 

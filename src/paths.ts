@@ -10,4 +10,8 @@ export const GET_COLLECTIONS_BY = "/collections/:created_by?/:offset?/:limit?";
 
 export const UPDATE_COLLECTION = "/update_collection/";
 
+export const ADD_COLLECTION_MEDIA = "/add_collection_media/";
+
+export const UPDATE_COLLECTION_MEDIA = "/update_collection_media/";
+
 export const OBTAIN_JWT = "/get_jwt/:email?/:pass?";
