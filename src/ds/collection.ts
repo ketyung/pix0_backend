@@ -183,6 +183,17 @@ export async function addCollectionMedia(
         if (collection.media_list === undefined) {
             collection.media_list = [];
         }
+
+        // check if the same name exists 
+        if ( collection.media_list.filter ((m : CollectionMedia)=>{
+            m.name === media.collectionMedia.name  })[0] !== undefined) {
+
+            if ( completion ){
+                completion(new Error(`Media collection ${media.collectionMedia.name} already exists!!`));
+                return; 
+            }
+        }
+
         collection.media_list.push(media.collectionMedia);
         collection.date_updated = new Date();
         
@@ -200,3 +211,50 @@ export async function addCollectionMedia(
     }
 }
 
+
+
+/**
+ * Add a collection media to the specified collection with collection
+ * id and the creator
+ * @param collectionMedia 
+ * @param collectionId 
+ * @param creator 
+ * @param completion 
+ */
+ export async function updateCollectionMedia(
+    media : {collectionMedia : CollectionMedia,
+    collectionId : string, 
+    creator : string}, 
+    completion?: (err?: Error, res? : Collection)=>void){
+
+
+    const client = new MongoClient(MONGO_URI);
+   
+    try {
+
+        const database = client.db(DB);
+        const ss = database.collection(COLLECTION);
+        
+        const query = { _id : ObjectID(media.collectionId), created_by : media.creator };
+        
+        let collection = await ss.findOne(query);
+
+        if (collection.media_list === undefined) {
+            collection.media_list = [];
+        }
+        collection.media_list.push(media.collectionMedia);
+        collection.date_updated = new Date();
+        
+        await ss.updateOne(query, { $set: collection }, async (err? : Error, _res? : string)=> {
+        
+            await client.close();
+       
+            if ( completion ){
+                completion(err, collection);
+            }
+        });
+    }
+    finally {
+        await client.close();
+    }
+}
