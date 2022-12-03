@@ -156,7 +156,8 @@ export async function updateCollection(
 
 /**
  * Add a collection media to the specified collection with collection
- * id and the creator
+ * id and the creator. A collection media must have a unique name within
+ * the collection
  * @param collectionMedia 
  * @param collectionId 
  * @param creator 
@@ -214,7 +215,7 @@ export async function addCollectionMedia(
 
 
 /**
- * Add a collection media to the specified collection with collection
+ * Update a collection media to the specified collection with collection
  * id and the creator
  * @param collectionMedia 
  * @param collectionId 
