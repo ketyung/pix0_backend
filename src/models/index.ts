@@ -52,8 +52,6 @@ export interface CollectionMedia {
 
     created_by? : string, 
 
-    layer_num : number, 
-
     max_num_of_media? : number, 
     
     medias : Media[],
@@ -61,7 +59,6 @@ export interface CollectionMedia {
     date_created? : Date,
 
     date_updated? : Date,
-
 }
 
 export enum MediaType {
@@ -80,18 +77,20 @@ export interface Media {
 
     type : MediaType,
 
+    layer_num : number, 
+
     value? : string, // value can be uri or another JSON string
 
     data_url? : Buffer, 
+
+    // percentage of ocurrance
+    poc? : number, 
 
     content_type? : string, 
 
     file_name? : string, 
 
-    // percentage of ocurrance
-    poc? : number, 
-
-    attributes?: MediaAttribute[],
+    attributes?: MediaAttribute[],    
 }
 
 
