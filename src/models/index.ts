@@ -79,6 +79,8 @@ export interface Media {
 
     layer_num : number, 
 
+    layer_name? : string,
+
     value? : string, // value can be uri or another JSON string
 
     data_url? : Buffer, 
