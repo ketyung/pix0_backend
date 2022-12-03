@@ -2,7 +2,7 @@ import express from 'express';
 import routes from './routes';
 import { getClientIp } from './utils';
 import { decodeJwtToken, isAllowedUser } from './utils/jwt';
-const bodyParser = require('body-parser');
+//const bodyParser = require('body-parser');
 const mongoSanitize = require('express-mongo-sanitize');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
@@ -108,9 +108,16 @@ class App {
 
         this.server.use(cors(corsOptionsDelegate));
         this.server.use (setHeaderAccessCtrls);
-        this.server.use(express.json());
-        this.server.use(bodyParser.urlencoded({ extended: true , limit: '50mb'}));
-        this.server.use(bodyParser.json({limit: '50mb'}));
+        this.server.use(express.json({limit: '50mb'}));
+        this.server.use(express.urlencoded({limit: '50mb'}));
+      
+        /*
+        this.server.use( bodyParser.json({limit: '50mb'}) );
+        this.server.use(bodyParser.urlencoded({
+            limit: '50mb',extended: true, parameterLimit:50000
+        }));
+        */
+
         this.server.use(cookieParser());
         this.server.use (logger);
         this.server.use(mongoSanitize());
