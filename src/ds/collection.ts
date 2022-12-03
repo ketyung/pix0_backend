@@ -155,14 +155,14 @@ export async function updateCollection(
 }
 
 /**
- * This method is meant for updating the collection
- * that has a single media only
+ * Add a collection media to the specified collection with collection
+ * id and the creator
  * @param collectionMedia 
  * @param collectionId 
  * @param creator 
  * @param completion 
  */
-export async function updateSingleCollectionMedia(
+export async function addCollectionMedia(
     media : {collectionMedia : CollectionMedia,
     collectionId : string, 
     creator : string}, 
@@ -183,7 +183,7 @@ export async function updateSingleCollectionMedia(
         if (collection.media_list === undefined) {
             collection.media_list = [];
         }
-        collection.media_list[0] = media.collectionMedia;
+        collection.media_list.push(media.collectionMedia);
         collection.date_updated = new Date();
         
         await ss.updateOne(query, { $set: collection }, async (err? : Error, _res? : string)=> {
