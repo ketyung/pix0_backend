@@ -84,7 +84,13 @@ routes
         _req.params.collection_id, _req.params.created_by,
         parseInt(_req.params.offset), parseInt(_req.params.limit));
     return res.json(data);
-});
+})
+.get(paths.GET_COLLECTION_MEDIA_COUNT_BY, async (_req, res)=>{
+
+    let data  = await c.getCollectionMediaCountBy(_req.params.collection_id, _req.params.created_by);
+    return res.json(data);
+})
+;
 
 
 

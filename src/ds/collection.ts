@@ -366,3 +366,25 @@ export async function getCollectionMediaBy(
     }
 }
 
+
+export async function getCollectionMediaCountBy(
+    collection_id : string, created_by : string) : Promise <any|undefined>{
+
+    const client = new MongoClient(MONGO_URI);
+
+    try 
+    {
+   
+        const database = client.db(DB);
+        const ss = database.collection(COLLECTION_MEDIA);
+      
+        const query = { created_by : created_by, collection_id : collection_id };
+
+        const t = await ss.count(query);
+        return {count : t };
+
+    } 
+    finally {
+        await client.close();
+    }
+}

@@ -10,6 +10,8 @@ export const GET_COLLECTIONS_BY = "/collections/:created_by?/:offset?/:limit?";
 
 export const GET_COLLECTION_MEDIA_BY = "/collection_media/:collection_id/:created_by?/:offset?/:limit?";
 
+export const GET_COLLECTION_MEDIA_COUNT_BY = "/collection_media_count/:collection_id/:created_by?";
+
 export const UPDATE_COLLECTION = "/update_collection/";
 
 export const ADD_COLLECTION_MEDIA = "/add_collection_media/";
