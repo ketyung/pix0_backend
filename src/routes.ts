@@ -5,7 +5,9 @@ import { obtainJwtToken } from './utils/jwt';
 
 const completion = (res : Response, data? : any, error? : Error) =>{
 
-    if ( error!== undefined) {
+    console.log("res::@completion:", error, data);
+    
+    if ( error !== undefined) {
         res.status(400).json({error:  "Error!", details :  error ? error.message : "404"});
     }
     else {

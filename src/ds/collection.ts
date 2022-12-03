@@ -256,7 +256,6 @@ export async function addCollectionMedia(
         _media.date_created = new Date();
         _media.date_updated = new Date();
 
-
         await ss.insertOne(_media, async (err? : Error, _res? : string)=> {
          
             await client.close();
