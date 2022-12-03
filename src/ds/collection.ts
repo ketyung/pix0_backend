@@ -194,14 +194,13 @@ async function collectionMediaExists ( collection_id : string,
   
     try {
    
+        const database = client.db(DB);
+        const ss = database.collection(COLLECTION_MEDIA);
+        const query = { collection_id : collection_id, name : name  };
+
+        let media = await ss.findOne(query);
     
-            const database = client.db(DB);
-            const ss = database.collection(COLLECTION_MEDIA);
-            const query = { collection_id : collection_id, name : name  };
- 
-            let media = await ss.findOne(query);
-        
-            return (media !== null && media !== undefined);          
+        return (media !== null && media !== undefined);          
     }
     finally {
         await client.close();
@@ -229,7 +228,7 @@ export async function addCollectionMedia(
     try {
 
         const database = client.db(DB);
-        const ss = database.collection(COLLECTION);
+        const ss = database.collection(COLLECTION_MEDIA);
         
         if ( !await collectionExists(media.collection_id, media.creator)) {
 
@@ -293,7 +292,7 @@ export async function addCollectionMedia(
     try {
 
         const database = client.db(DB);
-        const ss = database.collection(COLLECTION);
+        const ss = database.collection(COLLECTION_MEDIA);
         
         if ( !await collectionExists(media.collection_id, media.creator)) {
 
@@ -334,3 +333,36 @@ export async function addCollectionMedia(
     }
 
 }
+
+
+export async function getCollectionMediaBy(
+    collection_id : string, created_by : string,
+    offset? : number, limit? : number ) : Promise <any|undefined>{
+
+    const client = new MongoClient(MONGO_URI);
+
+    try 
+    {
+   
+        const database = client.db(DB);
+        const ss = database.collection(COLLECTION_MEDIA);
+      
+        const query = { created_by : created_by, collection_id : collection_id };
+
+        const rs = await ss
+                .find(query)
+                .sort ( { date_updated : -1})
+                .skip(offset ?? 0)
+                .limit(limit ?? 10)
+                .toArray();
+
+        const t = await ss.count(query);
+
+        return {res : rs, total : t, offset : offset, limit : limit};
+
+    } 
+    finally {
+        await client.close();
+    }
+}
+
