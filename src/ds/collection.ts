@@ -334,6 +334,45 @@ export async function addCollectionMedia(
 }
 
 
+/**
+ * Update a collection media to the specified collection with collection
+ * id and the creator
+ * @param media - a struct of {media: CollectionMedia, collection_id : string, creator : string} 
+ * @param completion 
+ */
+ export async function deleteCollectionMedia(
+    media_id : string, 
+    creator : string, 
+    completion?: (err?: Error, res?: {deleted : boolean})=>void){
+
+
+    const client = new MongoClient(MONGO_URI);
+
+    try {
+
+        const database = client.db(DB);
+        const ss = database.collection(COLLECTION_MEDIA);
+    
+        const query = { _id : ObjectID(media_id) , 
+         created_by : creator };
+        
+        await ss.remove(query, { justOne : true }, async (err? : Error, _res? : string)=> {
+        
+            await client.close();
+       
+            if ( completion ){
+                completion(err, { deleted :true } );
+            }
+        });
+    }
+    finally {
+        await client.close();
+    }
+
+}
+
+
+
 export async function getCollectionMediaBy(
     collection_id : string, created_by : string,
     offset? : number, limit? : number ) : Promise <any|undefined>{

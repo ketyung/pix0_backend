@@ -18,4 +18,6 @@ export const ADD_COLLECTION_MEDIA = "/add_collection_media/";
 
 export const UPDATE_COLLECTION_MEDIA = "/update_collection_media/";
 
+export const DELETE_COLLECTION_MEDIA = "/delete_collection_media/:media_id/:created_by?";
+
 export const OBTAIN_JWT = "/get_jwt/:email?/:pass?";

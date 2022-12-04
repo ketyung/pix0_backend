@@ -80,6 +80,13 @@ routes
     });
    
 })
+.get(paths.DELETE_COLLECTION_MEDIA, async (req, res)=>{
+    
+    await c.deleteCollectionMedia(req.params.media_id, req.params.created_by, (e, s)=>{
+        completion(res, s, e);
+    });
+   
+})
 .get(paths.GET_COLLECTION_MEDIA_BY, async (_req, res)=>{
 
     let data  = await c.getCollectionMediaBy(
