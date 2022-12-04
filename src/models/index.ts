@@ -68,9 +68,6 @@ export enum MediaType {
     text = 2,
 
     shape = 3, 
-
-    data_uri = 4, 
-
 }
 
 export interface Media {
@@ -82,8 +79,6 @@ export interface Media {
     layer_name? : string,
 
     value? : string, // value can be uri or another JSON string
-
-    data_url? : Buffer, 
 
     // percentage of ocurrance
     poc? : number, 
