@@ -108,8 +108,8 @@ class App {
 
         this.server.use(cors(corsOptionsDelegate));
         this.server.use (setHeaderAccessCtrls);
-        this.server.use(express.json({limit: '50mb'}));
-        this.server.use(express.urlencoded({limit: '50mb'}));
+        this.server.use(express.json({limit: '5mb'}));
+        this.server.use(express.urlencoded({limit: '5mb', extended: true}));
       
         /*
         this.server.use( bodyParser.json({limit: '50mb'}) );
