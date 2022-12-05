@@ -30,12 +30,8 @@ export interface Collection {
 
     status? : Status,
 
-    logo? : Buffer, 
-
-    layer_count? : number ,
-
-    media_list : CollectionMedia[],
-    
+    media_count? : number, 
+     
     created_by : string, 
 
     date_created? : Date,
@@ -53,7 +49,7 @@ export interface CollectionMedia {
     created_by? : string, 
 
     max_num_of_media? : number, 
-    
+
     medias : Media[],
 
     date_created? : Date,

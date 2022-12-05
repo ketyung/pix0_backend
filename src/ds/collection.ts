@@ -208,7 +208,9 @@ async function collectionMediaExists ( collection_id : string,
     
 }
 
- 
+
+
+
 /**
  * Add a collection media to the specified collection with collection
  * id and the creator. A collection media must have a unique name within
@@ -259,6 +261,8 @@ export async function addCollectionMedia(
         await ss.insertOne(_media, async (err? : Error, _res? : string)=> {
          
             await client.close();
+
+            await updateCollectionMediaCount(media.collection_id, media.creator);
      
             if ( completion ){
                 completion(err, _media);
@@ -426,3 +430,43 @@ export async function getCollectionMediaCountBy(
         await client.close();
     }
 }
+
+/*
+ * Internal method for checking if a collection exists
+ * by the specified id and the creator
+*/
+async function updateCollectionMediaCount ( collection_id : string, 
+    creator :string  ){
+    const client = new MongoClient(MONGO_URI);
+  
+    try {
+   
+        let cnt = await getCollectionMediaCountBy(collection_id, creator);
+
+
+        const database = client.db(DB);
+        const ss = database.collection(COLLECTION);
+        const query = { _id : ObjectID(collection_id), created_by : creator };
+        const collection = await ss.findOne(query);
+
+        collection.media_count = cnt.count; 
+        collection.date_updated = new Date();
+
+        console.log("update.collect.cnt::", collection);
+        
+        await ss.updateOne(query, { $set: collection }, async (_err? : Error, _res? : string)=> {
+        
+            await client.close();
+       
+        });
+          
+    }
+    catch (e : any ) {
+        console.log("updateMediaCountError:@x", e, new Date());
+    }
+    finally {
+        await client.close();
+    }
+    
+}
+
