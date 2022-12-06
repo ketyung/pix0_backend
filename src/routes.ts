@@ -41,6 +41,14 @@ routes
     return res.json(data);
     
 })
+.get(paths.GET_COLLECTIONS_BY_STATUS, async (_req, res)=>{
+
+    let data  = await c.getCollectionsByStatus(_req.params.status, 
+        parseInt(_req.params.offset), parseInt(_req.params.limit));
+    return res.json(data);
+    
+})
+
 .get(paths.OBTAIN_JWT, async (_req, res)=>{
 
     let data  = obtainJwtToken({email : _req.params.email, pass : _req.params.pass});
