@@ -371,9 +371,39 @@ export async function addCollectionMedia(
 }
 
 
+async function internalUpdateCollectionMedia(
+    media : CollectionMedia, 
+    media_id : string){
 
 
-export async function getRandomMediaInCollection ( collection_id : string){
+    const client = new MongoClient(MONGO_URI);
+
+    try {
+
+        const database = client.db(DB);
+        const ss = database.collection(COLLECTION_MEDIA);
+       
+        media.date_updated = new Date();
+
+        const query = { _id : ObjectID(media_id) };
+        
+
+        await ss.updateOne(query, { $set: media }, async (_err? : Error, _res? : string)=> {
+        
+            await client.close();
+       
+        });
+    }
+    finally {
+        await client.close();
+    }
+
+}
+
+
+
+export async function randomMediaForMinting ( collection_id : string,
+    minted_by? : string,  completion?: (err?: Error, res? : CollectionMedia)=>void){
     
     const client = new MongoClient(MONGO_URI);
   
@@ -381,19 +411,45 @@ export async function getRandomMediaInCollection ( collection_id : string){
    
         const database = client.db(DB);
         const ss = database.collection(COLLECTION_MEDIA);
-        const query = { collection_id : collection_id };
+        const query = { collection_id : collection_id,mint_info: {$type: 'undefined'} };
 
-        let medias = await ss.find(query);
+        let avail_medias = await ss.find(query);
         
-        if ( medias !== null) {
+        if ( avail_medias !== null) {
 
-            let avail_medias = medias.filter ((m : CollectionMedia) =>{
-                m.mint_info === undefined
-            });
+            if ( avail_medias.length > 0 ) {
 
-            let r = randomInt(0,avail_medias.length -1 );
-            
+                let r = randomInt(0,avail_medias.length -1 );
+                let rmedia = avail_medias[r];
+                rmedia.mint_info = {
+                    minted_by : minted_by,
+                    date_minted : new Date(),
+                    minted : false, 
+                };
+                // mark it with a temporay mint info
+                // so a concurrent next mint will not retrieve 
+                // the same mint
+                await internalUpdateCollectionMedia(rmedia, rmedia._id);
 
+                if ( completion ){
+                    completion(rmedia);
+                }
+            }
+            else {
+
+                if (completion) {
+
+                    completion (new Error('No available media for minting in the collection'));
+                }
+            }
+
+        }
+        else {
+
+            if (completion) {
+                completion (new Error('No available media for minting in the collection'));
+            }
+    
         }
     }
     finally {
