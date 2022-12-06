@@ -122,6 +122,12 @@ routes
     let data  = await c.getCollectionMediaCountBy(_req.params.collection_id, _req.params.created_by);
     return res.json(data);
 })
+.get(paths.GET_ONE_COLLECTION_MEDIA, async (_req, res)=>{
+
+    let data  = await c.getOneCollectionMedia(
+        _req.params.collection_id);
+    return res.json(data);
+})
 ;
 
 

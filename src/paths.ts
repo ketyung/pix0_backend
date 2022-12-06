@@ -12,6 +12,8 @@ export const GET_COLLECTIONS_BY_STATUS = "/collections_by_status/:status/:offset
 
 export const GET_COLLECTION_MEDIA_BY = "/collection_media/:collection_id/:created_by?/:offset?/:limit?";
 
+export const GET_ONE_COLLECTION_MEDIA = "/one_collection_media/:collection_id";
+
 export const GET_COLLECTION_MEDIA_COUNT_BY = "/collection_media_count/:collection_id/:created_by?";
 
 export const UPDATE_COLLECTION = "/update_collection/";

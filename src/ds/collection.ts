@@ -583,6 +583,29 @@ export async function getCollectionMediaBy(
     }
 }
 
+export async function getOneCollectionMedia(
+    collection_id : string ) : Promise <CollectionMedia|undefined>{
+
+    const client = new MongoClient(MONGO_URI);
+
+    try 
+    {
+   
+        const database = client.db(DB);
+        const ss = database.collection(COLLECTION_MEDIA);
+      
+        const query = { collection_id : collection_id };
+
+        const rs = await ss
+                .findOne(query);
+
+        return rs; 
+    } 
+    finally {
+        await client.close();
+    }
+}
+
 
 export async function getCollectionMediaCountBy(
     collection_id : string, created_by : string) : Promise <any|undefined>{
