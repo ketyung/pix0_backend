@@ -30,6 +30,8 @@ export interface Collection {
 
     status? : Status,
 
+    std_price? : number, 
+
     media_count? : number, 
      
     created_by : string, 
