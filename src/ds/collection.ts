@@ -373,7 +373,8 @@ export async function addCollectionMedia(
 
 async function internalUpdateCollectionMedia(
     media : CollectionMedia, 
-    media_id : string){
+    media_id : string,
+    completion?: (err?: Error, res? :string )=>void){
 
 
     const client = new MongoClient(MONGO_URI);
@@ -392,11 +393,64 @@ async function internalUpdateCollectionMedia(
         
             await client.close();
        
+            if ( completion)
+                completion(_err, _res);
         });
     }
     finally {
         await client.close();
     }
+
+}
+
+/**
+ * Method used to remove the mint info if not successfully minted
+ * @param media_id 
+ * @param minted_by 
+ */
+export async function removeMintInfoOf( media_id : string, minted_by : string,
+    completion?: (err?: Error, removed? : boolean)=>void ) {
+
+    const client = new MongoClient(MONGO_URI);
+  
+    try {
+   
+        const database = client.db(DB);
+        const ss = database.collection(COLLECTION_MEDIA);
+        const query = { _id : ObjectID(media_id)  };
+        let media = await ss.findOne(query);
+    
+        if ( media !== null && media.mint_info !== undefined && 
+            media.mint_info.minted_by === minted_by) {
+
+            media.mint_info = undefined;
+
+            await internalUpdateCollectionMedia(media, media_id,
+                (e, r)=>{
+                
+                if ( completion ){
+
+                    if (e){
+                        completion(e, false);
+                    }
+                    else {
+
+                        completion(undefined, true);
+                    }
+                }
+            });
+
+        }  
+        else {
+
+            if (completion)
+                completion( new Error('No such collection media!'));
+        }        
+    }
+    finally {
+        await client.close();
+    }
+    
 
 }
 

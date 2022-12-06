@@ -22,4 +22,6 @@ export const DELETE_COLLECTION_MEDIA = "/delete_collection_media/:media_id/:crea
 
 export const RANDOM_MEDIA_FOR_MINTING = "/random_media_for_minting/:collection_id/:minted_by?";
 
+export const REMOVE_MINT_INFO = "/remove_mint_info/:media_id/:minted_by?";
+
 export const OBTAIN_JWT = "/get_jwt/:email?/:pass?";

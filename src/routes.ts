@@ -94,6 +94,13 @@ routes
     });
    
 })
+.get(paths.REMOVE_MINT_INFO, async (req, res)=>{
+    
+    await c.removeMintInfoOf(req.params.media_id, req.params.minted_by, (e, s)=>{
+        completion(res, s, e);
+    });
+   
+})
 
 .get(paths.GET_COLLECTION_MEDIA_BY, async (_req, res)=>{
 
