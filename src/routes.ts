@@ -87,6 +87,14 @@ routes
     });
    
 })
+.get(paths.RANDOM_MEDIA_FOR_MINTING, async (req, res)=>{
+    
+    await c.randomMediaForMinting(req.params.collection_id, req.params.minted_by, (e, s)=>{
+        completion(res, s, e);
+    });
+   
+})
+
 .get(paths.GET_COLLECTION_MEDIA_BY, async (_req, res)=>{
 
     let data  = await c.getCollectionMediaBy(
