@@ -1,5 +1,6 @@
 import { MONGO_URI } from "./config";
 import { Collection, CollectionMedia } from "../models";
+import { randomInt } from "../utils";
 
 const DB = "xnft_collections";
 const COLLECTION = "xnft_collection";
@@ -38,6 +39,38 @@ export async function getCollectionsBy(created_by : string
     }
 }
 
+
+
+export async function getCollectionsByStatus(
+    status : string, offset? : number, limit? : number ) : Promise <any|undefined>{
+
+    const client = new MongoClient(MONGO_URI);
+
+    try 
+    {
+   
+        const database = client.db(DB);
+        const ss = database.collection(COLLECTION);
+      
+        const query = { status :status  };
+
+        const rs = 
+        await ss
+        .find(query)
+        .sort ( { date_updated : -1})
+        .skip(offset ?? 0)
+        .limit(limit ?? 10)
+        .toArray();
+
+        const t = await ss.count(query);
+
+        return {res : rs, total : t, offset : offset, limit : limit};
+
+    } 
+    finally {
+        await client.close();
+    }
+}
 
 export async function getCollection(name : string, created_by : string ) : Promise <any|undefined>{
 
@@ -335,6 +368,38 @@ export async function addCollectionMedia(
         await client.close();
     }
 
+}
+
+
+
+
+export async function getRandomMediaInCollection ( collection_id : string){
+    
+    const client = new MongoClient(MONGO_URI);
+  
+    try {
+   
+        const database = client.db(DB);
+        const ss = database.collection(COLLECTION_MEDIA);
+        const query = { collection_id : collection_id };
+
+        let medias = await ss.find(query);
+        
+        if ( medias !== null) {
+
+            let avail_medias = medias.filter ((m : CollectionMedia) =>{
+                m.mint_info === undefined
+            });
+
+            let r = randomInt(0,avail_medias.length -1 );
+            
+
+        }
+    }
+    finally {
+        await client.close();
+    }
+    
 }
 
 
