@@ -452,14 +452,9 @@ async function updateCollectionMediaCount ( collection_id : string,
         collection.media_count = cnt.count; 
         collection.date_updated = new Date();
 
-        console.log("update.collect.cnt::", collection);
-        
-        await ss.updateOne(query, { $set: collection }, async (_err? : Error, _res? : string)=> {
-        
-            await client.close();
+        await client.close();
        
-        });
-          
+        await updateCollection(collection);  
     }
     catch (e : any ) {
         console.log("updateMediaCountError:@x", e, new Date());
