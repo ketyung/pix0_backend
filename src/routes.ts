@@ -1,6 +1,7 @@
 import { Router, Response} from 'express';
 import * as paths from './paths';
 import * as c from './ds/collection';
+import * as cm from './ds/collection_media';
 import { obtainJwtToken } from './utils/jwt';
 
 const completion = (res : Response, data? : any, error? : Error) =>{
@@ -81,35 +82,35 @@ routes
 })
 .post(paths.ADD_COLLECTION_MEDIA, async (req, res)=>{
     
-    await c.addCollectionMedia(req.body, (e, s)=>{
+    await cm.addCollectionMedia(req.body, (e, s)=>{
         completion(res, s, e);
     });
    
 })
 .post(paths.UPDATE_COLLECTION_MEDIA, async (req, res)=>{
     
-    await c.updateCollectionMedia(req.body, (e, s)=>{
+    await cm.updateCollectionMedia(req.body, (e, s)=>{
         completion(res, s, e);
     });
    
 })
 .get(paths.DELETE_COLLECTION_MEDIA, async (req, res)=>{
     
-    await c.deleteCollectionMedia(req.params.media_id, req.params.created_by, (e, s)=>{
+    await cm.deleteCollectionMedia(req.params.media_id, req.params.created_by, (e, s)=>{
         completion(res, s, e);
     });
    
 })
 .get(paths.RANDOM_MEDIA_FOR_MINTING, async (req, res)=>{
     
-    await c.randomMediaForMinting(req.params.collection_id, req.params.minted_by, (e, s)=>{
+    await cm.randomMediaForMinting(req.params.collection_id, req.params.minted_by, (e, s)=>{
         completion(res, s, e);
     });
    
 })
 .get(paths.REMOVE_MINT_INFO, async (req, res)=>{
     
-    await c.removeMintInfoOf(req.params.media_id, req.params.minted_by, (e, s)=>{
+    await cm.removeMintInfoOf(req.params.media_id, req.params.minted_by, (e, s)=>{
         completion(res, s, e);
     });
    
@@ -117,19 +118,19 @@ routes
 
 .get(paths.GET_COLLECTION_MEDIA_BY, async (_req, res)=>{
 
-    let data  = await c.getCollectionMediaBy(
+    let data  = await cm.getCollectionMediaBy(
         _req.params.collection_id, _req.params.created_by,
         parseInt(_req.params.offset), parseInt(_req.params.limit));
     return res.json(data);
 })
 .get(paths.GET_COLLECTION_MEDIA_COUNT_BY, async (_req, res)=>{
 
-    let data  = await c.getCollectionMediaCountBy(_req.params.collection_id, _req.params.created_by);
+    let data  = await cm.getCollectionMediaCountBy(_req.params.collection_id, _req.params.created_by);
     return res.json(data);
 })
 .get(paths.GET_ONE_COLLECTION_MEDIA, async (_req, res)=>{
 
-    let data  = await c.getOneCollectionMedia(
+    let data  = await cm.getOneCollectionMedia(
         _req.params.collection_id);
     return res.json(data);
 })
