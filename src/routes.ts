@@ -17,12 +17,12 @@ const completion = (res : Response, data? : any, error? : Error) =>{
 }
 
 
-const routes = Router();
-
 process.on('uncaughtException', function (err) {
     console.error(err);
     console.log("Node NOT Exiting...");
 });
+
+const routes = Router();
 
 routes
 .get(paths.ROOT, (_req, res) => {
