@@ -108,3 +108,35 @@ export interface MediaAttribute {
     display_type? : string, 
 
 }
+
+
+export interface MinterGroup {
+
+    name : string,
+
+    collection_id : string, 
+
+    description? : string,
+
+    mint_price? : number, 
+
+    start_date? : number, // store the date as unix timestamp
+
+    end_date? : number, 
+
+    date_created? : Date, 
+
+    date_updated? : Date, 
+
+}
+
+
+export interface GroupAllowedMinter {
+
+    name? : string,
+
+    wallet_address : string ,
+    
+    group_id : string , 
+    
+}
