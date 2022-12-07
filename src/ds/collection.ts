@@ -194,7 +194,7 @@ export async function updateCollection(
  * by the specified id and the creator
 */
 export async function collectionExists ( collection_id : string, 
-    created_by : string ): Promise<boolean>{
+    created_by? : string ): Promise<boolean>{
     
     const client = new MongoClient(MONGO_URI);
   
@@ -203,7 +203,8 @@ export async function collectionExists ( collection_id : string,
     
         const database = client.db(DB);
         const ss = database.collection(COLLECTION);
-        const query = { _id : ObjectID(collection_id), created_by : created_by };
+        const query = created_by ? { _id : ObjectID(collection_id), created_by : created_by } :
+        { _id : ObjectID(collection_id)} ;
 
         let collection = await ss.findOne(query);
     

@@ -28,4 +28,8 @@ export const RANDOM_MEDIA_FOR_MINTING = "/random_media_for_minting/:collection_i
 
 export const REMOVE_MINT_INFO = "/remove_mint_info/:media_id/:minted_by?";
 
+export const ADD_COLLECTION_MINTER_GROUP = "/add_minter_group/";
+
+export const ADD_MINTER_TO_GROUP = "/add_minter_to_group/";
+
 export const OBTAIN_JWT = "/get_jwt/:email?/:pass?";

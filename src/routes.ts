@@ -2,11 +2,10 @@ import { Router, Response} from 'express';
 import * as paths from './paths';
 import * as c from './ds/collection';
 import * as cm from './ds/collection_media';
+import * as cmg from './ds/collection_minter_group';
 import { obtainJwtToken } from './utils/jwt';
 
 const completion = (res : Response, data? : any, error? : Error) =>{
-
-    //console.log("res::@completion:", error, data);
 
     if ( error !== undefined) {
         res.status(400).json({error:  "Error!", details :  error ? error.message : "404"});
@@ -133,6 +132,20 @@ routes
     let data  = await cm.getOneCollectionMedia(
         _req.params.collection_id);
     return res.json(data);
+})
+.post(paths.ADD_COLLECTION_MINTER_GROUP, async (req, res)=>{
+    
+    await cmg.addMinterGroup(req.body, (e, s)=>{
+        completion(res, s, e);
+    });
+   
+})
+.post(paths.ADD_MINTER_TO_GROUP, async (req, res)=>{
+    
+    await cmg.addMintersToGroup(req.body, (e, s)=>{
+        completion(res, s, e);
+    });
+   
 })
 ;
 

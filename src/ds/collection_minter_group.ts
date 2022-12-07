@@ -2,6 +2,7 @@ import { GroupAllowedMinter, MinterGroup } from "../models";
 import { MongoClient, ObjectID } from "./collection";
 import { DB } from "./collection";
 import { MONGO_URI } from "./config";
+import * as collection from './collection';
 
 const COLLECTION_MINTER_GROUP = "xnft_collection_minter_group";
 const COLLECTION_MINTER_GROUP_MINTER = "xnft_collection_minter_group_minter";
@@ -69,6 +70,16 @@ export async function minterExists ( group_id : string,
         const database = client.db(DB);
         const ss = database.collection(COLLECTION_MINTER_GROUP);
         
+
+        if ( !await collection.collectionExists(group.collection_id)) {
+
+            if ( completion ) {
+
+                completion(new Error("The specified collection does NOT exist!"));
+                return;
+            }
+        }
+
         if ( await minterGroupExists(group.collection_id, group.name)) {
 
             if ( completion ) {
@@ -104,7 +115,8 @@ export async function minterExists ( group_id : string,
  * @param completion 
  */
  export async function addMintersToGroup(
-    minters : GroupAllowedMinter []){
+    minters : GroupAllowedMinter [],
+    completion?: (err?: Error, res? : GroupAllowedMinter[])=>void){
 
     const client = new MongoClient(MONGO_URI);
    
@@ -116,6 +128,10 @@ export async function minterExists ( group_id : string,
         await ss.insertMany(minters, async (_err? : Error, _res? : string)=> {
          
             await client.close();
+
+            if ( completion ){
+                completion(_err, minters);
+            }
         });
 
     }
