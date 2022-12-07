@@ -19,6 +19,11 @@ const completion = (res : Response, data? : any, error? : Error) =>{
 
 const routes = Router();
 
+process.on('uncaughtException', function (err) {
+    console.error(err);
+    console.log("Node NOT Exiting...");
+});
+
 routes
 .get(paths.ROOT, (_req, res) => {
     return res.json({ message: 'Welcome To The REST API Endpoint Of Pix0', 
