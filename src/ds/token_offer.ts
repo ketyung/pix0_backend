@@ -2,7 +2,6 @@ import { MongoClient } from "./collection";
 import { MONGO_URI } from "./config";
 import { DB } from "./collection";
 import { Offer, OfferCreator, OfferType } from "../models";
-import { type } from "os";
 
 
 const TOKEN_OFFER = "xnft_token_offer";
@@ -56,11 +55,11 @@ export async function deleteOffer(
         const database = client.db(DB);
         const ss = database.collection(TOKEN_OFFER);
     
-        const query = { nft_token: { NFTokenID : param.token_id} ,
+        const query = { "nft_token.NFTokenID" : param.token_id ,
          type : param.type,  
          created_by : param.creator };
         
-        await ss.remove(query, { justOne : true }, async (err? : Error, _res? : string)=> {
+        await ss.deleteOne(query, async (err? : Error, _res? : string)=> {
         
             await client.close();
        
@@ -120,10 +119,12 @@ export async function hasOffer(
         const database = client.db(DB);
         const ss = database.collection(TOKEN_OFFER);
 
-        const query = { nft_token: { NFTokenID : token_id}, type : type  };
+        const query = { "nft_token.NFTokenID" : token_id, type : type  };
 
         const rs = await ss
         .findOne(query);
+
+        console.log("has_offer::", rs, query);
 
         return { has_offer : rs !== null }; 
 
