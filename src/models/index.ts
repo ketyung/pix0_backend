@@ -140,3 +140,51 @@ export interface GroupAllowedMinter {
     group_id : string , 
     
 }
+
+/*
+The offchain record of the NFT token
+required for recording the buy/sell offer
+*/
+export interface AccountNFToken {
+    Flags: number
+    Issuer: string
+    NFTokenID: string
+    NFTokenTaxon: number
+    URI?: string
+    nft_serial: number
+}
+
+export enum OfferType {
+
+    Sell,
+
+    Buy,
+}
+
+export interface OfferCreator {
+
+    pubkey? : string,
+
+    classic_address? : string, 
+}
+
+export interface Offer {
+
+    type : OfferType,
+
+    offer_id : string, 
+
+    nft_token : AccountNFToken,
+
+    remark? : string, 
+
+    start_date? : number, // in timestamp,
+
+    end_date? : number, 
+
+    created_by : OfferCreator,
+
+    date_created? : Date, 
+}
+
+
