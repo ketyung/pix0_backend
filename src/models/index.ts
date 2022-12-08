@@ -178,6 +178,8 @@ export interface Offer {
 
     price? : number, 
 
+    seq_num? : number, 
+
     remark? : string, 
 
     start_date? : number, // in timestamp,
