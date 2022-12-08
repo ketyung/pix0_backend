@@ -168,6 +168,12 @@ routes
         parseInt(_req.params.type), parseInt(_req.params.offset), parseInt(_req.params.limit) );
     return res.json(data);
 })
+.get(paths.CHECK_HAS_OFFER, async (_req, res)=>{
+
+    let data  = await toff.hasOffer(_req.params.token_id, 
+        parseInt(_req.params.type)  );
+    return res.json(data);
+})
 
 ;
 

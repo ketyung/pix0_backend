@@ -172,20 +172,12 @@ export interface Offer {
 
     type : OfferType,
 
-    offer_id : string, 
-
     nft_token? : AccountNFToken,
 
     price? : number, 
 
-    seq_num? : number, 
-
     remark? : string, 
-
-    start_date? : number, // in timestamp,
-
-    end_date? : number, 
-
+    
     created_by : OfferCreator,
 
     date_created? : Date, 

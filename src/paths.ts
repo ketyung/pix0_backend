@@ -38,4 +38,6 @@ export const DELETE_OFFER = "/delete_offer/";
 
 export const GET_OFFERS = "/offers/:type/:offset?/:limit?";
 
+export const CHECK_HAS_OFFER = "/has_offer/:type/:token_id";
+
 export const OBTAIN_JWT = "/get_jwt/:email?/:pass?";
