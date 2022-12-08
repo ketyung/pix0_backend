@@ -3,6 +3,7 @@ import * as paths from './paths';
 import * as c from './ds/collection';
 import * as cm from './ds/collection_media';
 import * as cmg from './ds/collection_minter_group';
+import * as toff from './ds/token_offer';
 import { obtainJwtToken } from './utils/jwt';
 
 const completion = (res : Response, data? : any, error? : Error) =>{
@@ -147,6 +148,27 @@ routes
     });
    
 })
+.post(paths.ADD_OFFER, async (req, res)=>{
+    
+    await toff.addOffer(req.body, (e, s)=>{
+        completion(res, s, e);
+    });
+   
+})
+.post(paths.DELETE_OFFER, async (req, res)=>{
+    
+    await toff.deleteOffer(req.body, (e, s)=>{
+        completion(res, s, e);
+    });
+   
+})
+.get(paths.GET_OFFERS, async (_req, res)=>{
+
+    let data  = await toff.getOffersBy(
+        parseInt(_req.params.type), parseInt(_req.params.offset), parseInt(_req.params.limit) );
+    return res.json(data);
+})
+
 ;
 
 

@@ -32,4 +32,10 @@ export const ADD_COLLECTION_MINTER_GROUP = "/add_minter_group/";
 
 export const ADD_MINTER_TO_GROUP = "/add_minter_to_group/";
 
+export const ADD_OFFER = "/add_offer/";
+
+export const DELETE_OFFER = "/delete_offer/";
+
+export const GET_OFFERS = "/offers/:type/:offset?/:limit?";
+
 export const OBTAIN_JWT = "/get_jwt/:email?/:pass?";

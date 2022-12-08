@@ -41,9 +41,9 @@ const TOKEN_OFFER = "xnft_token_offer";
 }
 
 
-export async function deleteOfferId(
-    offer_id : string, 
-    creator : OfferCreator, 
+export async function deleteOffer(
+    param : {offer_id : string, 
+    creator : OfferCreator}, 
     completion?: (err?: Error, res?: {deleted : boolean})=>void){
 
     const client = new MongoClient(MONGO_URI);
@@ -53,8 +53,8 @@ export async function deleteOfferId(
         const database = client.db(DB);
         const ss = database.collection(TOKEN_OFFER);
     
-        const query = { offer_id : offer_id , 
-         created_by : creator };
+        const query = { offer_id : param.offer_id , 
+         created_by : param.creator };
         
         await ss.remove(query, { justOne : true }, async (err? : Error, _res? : string)=> {
         
