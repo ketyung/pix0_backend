@@ -174,10 +174,10 @@ export interface Offer {
 
     offer_id : string, 
 
-    nft_token : AccountNFToken,
+    nft_token? : AccountNFToken,
 
     price? : number, 
-    
+
     remark? : string, 
 
     start_date? : number, // in timestamp,
