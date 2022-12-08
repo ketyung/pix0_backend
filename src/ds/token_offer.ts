@@ -124,8 +124,7 @@ export async function hasOffer(
         const rs = await ss
         .findOne(query);
 
-        console.log("has_offer::", rs, query);
-
+    
         return { has_offer : rs !== null }; 
 
     } 
