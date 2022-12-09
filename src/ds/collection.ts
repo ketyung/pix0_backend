@@ -257,6 +257,41 @@ export async function updateCollectionMediaCount ( collection_id : string,
 }
 
 
+/*
+ * Method for checking if a collection exists
+ * by the specified id and the creator
+*/
+export async function updateCollectionMinterGroupCount ( collection_id : string, 
+    creator :string  ){
+    const client = new MongoClient(MONGO_URI);
+  
+    try {
+   
+        let cnt = await collection_media.getCollectionMediaCountBy(collection_id, creator);
+
+
+        const database = client.db(DB);
+        const ss = database.collection(COLLECTION);
+        const query = { _id : ObjectID(collection_id), created_by : creator };
+        const collection = await ss.findOne(query);
+
+        collection.media_count = cnt.count; 
+        collection.date_updated = new Date();
+        collection.id = collection._id;
+
+        await client.close();
+
+        await updateCollection(collection);  
+    }
+    catch (e : any ) {
+        console.log("updateMediaCountError:@x", e, new Date());
+    }
+    finally {
+        await client.close();
+    }
+    
+}
+
 export async function deleteCollection(
     collection_id : string, 
     creator : string, 
