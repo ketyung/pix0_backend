@@ -33,6 +33,8 @@ export interface Collection {
     std_price? : number, 
 
     media_count? : number, 
+
+    minter_group_count? : number, 
      
     created_by : string, 
 

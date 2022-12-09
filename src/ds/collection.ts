@@ -51,8 +51,9 @@ export async function getCollectionsByStatus(
         const database = client.db(DB);
         const ss = database.collection(COLLECTION);
       
-        const query = { status :status, media_count: {$gt:0}  }; // filter by media count > 0
-
+        const query ={ $or :[{ status :status, media_count: {$gt:0}},
+        {minter_group_count :{$gt:0}}] }; 
+        
         const rs = 
         await ss
         .find(query)
