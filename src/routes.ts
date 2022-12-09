@@ -139,7 +139,7 @@ routes
 })
 .get(paths.GET_ONE_COLLECTION_MEDIA, async (_req, res)=>{
 
-    let data  = await cm.getOneCollectionMedia(
+    let data : any = await cm.getOneCollectionMedia(
         _req.params.collection_id);
     return res.json(data);
 })
