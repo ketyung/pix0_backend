@@ -275,6 +275,9 @@ export async function deleteCollection(
                 if ( e instanceof Error){
                     console.error("Error deleting media:", e);
                 }
+                else {
+                    console.log("deleting..media::", e, new Date());
+                }
             });
        
             if ( completion ){
