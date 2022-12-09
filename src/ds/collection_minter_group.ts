@@ -1,4 +1,4 @@
-import { GroupAllowedMinter, MinterGroup } from "../models";
+import { Minter, MinterGroup } from "../models";
 import { MongoClient, ObjectID } from "./collection";
 import { DB } from "./collection";
 import { MONGO_URI } from "./config";
@@ -115,8 +115,8 @@ export async function minterExists ( group_id : string,
  * @param completion 
  */
  export async function addMintersToGroup(
-    minters : GroupAllowedMinter [],
-    completion?: (err?: Error, res? : GroupAllowedMinter[])=>void){
+    minters : Minter [],
+    completion?: (err?: Error, res? : Minter[])=>void){
 
     const client = new MongoClient(MONGO_URI);
    
