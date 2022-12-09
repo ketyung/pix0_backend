@@ -281,8 +281,6 @@ export async function randomMediaForMinting ( collection_id : string,
 
 
 /**
- * Update a collection media to the specified collection with collection
- * id and the creator
  * @param media - a struct of {media: CollectionMedia, collection_id : string, creator : string} 
  * @param completion 
  */
@@ -302,7 +300,7 @@ export async function randomMediaForMinting ( collection_id : string,
         const query = { _id : ObjectID(media_id) , 
          created_by : creator };
         
-        await ss.remove(query, { justOne : true }, async (err? : Error, _res? : string)=> {
+        await ss.deleteOne(query,  async (err? : Error, _res? : string)=> {
         
             await client.close();
        
@@ -316,6 +314,41 @@ export async function randomMediaForMinting ( collection_id : string,
     }
 
 }
+
+
+/**
+ * @param media - a struct of {media: CollectionMedia, collection_id : string, creator : string} 
+ * @param completion 
+ */
+ export async function deleteCollectionMediaBy(
+    collection_id : string, 
+    completion?: (err?: Error, res?: {deleted : boolean})=>void){
+
+
+    const client = new MongoClient(MONGO_URI);
+
+    try {
+
+        const database = client.db(DB);
+        const ss = database.collection(COLLECTION_MEDIA);
+    
+        const query = { collection_id : collection_id };
+        
+        await ss.delete(query, async (err? : Error, _res? : string)=> {
+        
+            await client.close();
+       
+            if ( completion ){
+                completion(err, { deleted :true } );
+            }
+        });
+    }
+    finally {
+        await client.close();
+    }
+
+}
+
 
 
 

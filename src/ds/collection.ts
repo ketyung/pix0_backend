@@ -250,3 +250,41 @@ export async function updateCollectionMediaCount ( collection_id : string,
     }
     
 }
+
+
+export async function deleteCollection(
+    collection_id : string, 
+    creator : string, 
+    completion?: (err?: Error, res?: {deleted : boolean})=>void){
+
+
+    const client = new MongoClient(MONGO_URI);
+
+    try {
+
+        const database = client.db(DB);
+        const ss = database.collection(COLLECTION);
+    
+        const query = { _id : ObjectID(collection_id) , 
+         created_by : creator };
+        
+        await ss.deleteOne(query, async (err? : Error, _res? : string)=> {
+        
+            await client.close();
+            await collection_media.deleteCollectionMediaBy(collection_id, (e)=>{
+                if ( e instanceof Error){
+                    console.error("Error deleting media:", e);
+                }
+            });
+       
+            if ( completion ){
+                completion(err, { deleted :true } );
+            }
+        });
+    }
+    finally {
+        await client.close();
+    }
+
+}
+
