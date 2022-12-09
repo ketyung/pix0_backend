@@ -237,9 +237,10 @@ export async function updateCollectionMediaCount ( collection_id : string,
 
         collection.media_count = cnt.count; 
         collection.date_updated = new Date();
+        collection.id = collection._id;
 
         await client.close();
-       
+
         await updateCollection(collection);  
     }
     catch (e : any ) {
