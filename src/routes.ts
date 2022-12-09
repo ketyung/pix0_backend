@@ -124,6 +124,14 @@ routes
     });
    
 })
+/*
+.get(paths.RESET_MINT_INFO, async (req, res)=>{
+    
+    await cm.resetAllMintInfo(req.params.collection_id, (e, s)=>{
+        completion(res, s, e);
+    });
+   
+})*/
 
 .get(paths.GET_COLLECTION_MEDIA_BY, async (_req, res)=>{
 

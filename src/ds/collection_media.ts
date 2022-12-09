@@ -232,9 +232,11 @@ export async function randomMediaForMinting ( collection_id : string,
    
         const database = client.db(DB);
         const ss = database.collection(COLLECTION_MEDIA);
-        const query = { collection_id : collection_id,mint_info: {$type: 'undefined'} };
 
-        let avail_medias = await ss.find(query);
+        const query = { collection_id : collection_id , mint_info: { $exists: false }  };
+
+      
+        let avail_medias = await ss.find(query).toArray();
         
         if ( avail_medias !== null) {
 
@@ -242,18 +244,20 @@ export async function randomMediaForMinting ( collection_id : string,
 
                 let r = randomInt(0,avail_medias.length -1 );
                 let rmedia = avail_medias[r];
+
                 rmedia.mint_info = {
                     minted_by : minted_by,
                     date_minted : new Date(),
                     minted : false, 
                 };
+
                 // mark it with a temporay mint info
                 // so a concurrent next mint will not retrieve 
                 // the same mint
                 await internalUpdateCollectionMedia(rmedia, rmedia._id);
 
                 if ( completion ){
-                    completion(rmedia);
+                    completion(undefined, rmedia);
                 }
             }
             else {
@@ -278,6 +282,39 @@ export async function randomMediaForMinting ( collection_id : string,
     }
     
 }
+
+/*
+export async function resetAllMintInfo ( collection_id : string,
+    completion?: (err?: Error, res? : {done? : boolean})=>void){
+    
+    const client = new MongoClient(MONGO_URI);
+  
+    try {
+   
+        const database = client.db(DB);
+        const ss = database.collection(COLLECTION_MEDIA);
+        const query = { collection_id : collection_id } ;//,mint_info: {$type: 'undefined'} };
+
+      
+        let avail_medias = await ss.find(query).toArray();
+
+        for (var r=0; r < avail_medias.length; r++){
+
+            let rmedia = avail_medias[r];
+            rmedia.mint_info = undefined;
+
+            await internalUpdateCollectionMedia(rmedia, rmedia._id);
+
+        }
+
+        if ( completion)
+            completion(undefined, {done : true});
+    }
+    finally {
+        await client.close();
+    }
+    
+}*/
 
 
 /**

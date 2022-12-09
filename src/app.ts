@@ -121,11 +121,10 @@ class App {
         this.server.use(cookieParser());
         this.server.use (logger);
         this.server.use(mongoSanitize());
-
+       
         if (process.env.REQUIRE_TO_CHECK_ACCESS) {
             this.server.use(checkAccess);
-        }
-         
+        }    
       
     }
 
