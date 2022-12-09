@@ -80,6 +80,15 @@ routes
     });
    
 })
+.get(paths.DELETE_COLLECTION, async (req, res)=>{
+    
+
+    await c.deleteCollection(req.params.collection_id, req.params.creator, (e, s)=>{
+        completion(res, s, e);
+    });
+   
+})
+
 .post(paths.ADD_COLLECTION_MEDIA, async (req, res)=>{
     
     await cm.addCollectionMedia(req.body, (e, s)=>{

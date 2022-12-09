@@ -18,8 +18,7 @@ export const GET_COLLECTION_MEDIA_COUNT_BY = "/collection_media_count/:collectio
 
 export const UPDATE_COLLECTION = "/update_collection/";
 
-export const DELETE_COLLECTION = "/update_collection/";
-
+export const DELETE_COLLECTION = "/delete_collection/:collection_id/:creator";
 
 export const ADD_COLLECTION_MEDIA = "/add_collection_media/";
 

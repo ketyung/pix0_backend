@@ -334,12 +334,12 @@ export async function randomMediaForMinting ( collection_id : string,
     
         const query = { collection_id : collection_id };
         
-        await ss.delete(query, async (err? : Error, _res? : string)=> {
+        await ss.deleteMany(query, async (err? : Error, _res? : any )=> {
         
             await client.close();
        
             if ( completion ){
-                completion(err, { deleted :true } );
+                completion(err, _res );
             }
         });
     }
