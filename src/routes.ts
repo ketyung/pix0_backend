@@ -150,7 +150,7 @@ routes
     });
    
 })
-.post(paths.ADD_MINTER_TO_GROUP, async (req, res)=>{
+.post(paths.ADD_MINTERS_TO_GROUP, async (req, res)=>{
     
     await cmg.addMintersToGroup(req.body, (e, s)=>{
         completion(res, s, e);
