@@ -124,6 +124,8 @@ export interface MinterGroup {
 
     end_date? : number, 
 
+    max_per_wallet? : number, 
+
     date_created? : Date, 
 
     date_updated? : Date, 
