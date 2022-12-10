@@ -38,6 +38,8 @@ export interface Collection {
 
     burnable? : boolean,
 
+    transferrable? : boolean,
+
     transfer_fee? : number, 
                
     created_by : string, 
