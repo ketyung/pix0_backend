@@ -84,8 +84,9 @@ export async function getOffersBy(type : OfferType,
         const database = client.db(DB);
         const ss = database.collection(TOKEN_OFFER);
       
-        const query = destination ? { type : type, destination : destination  } : 
-        { type : type ,destination: { $exists: false }  }; // if the destination isn't specified
+        const query = (destination && destination !== "any") 
+        ? { type : type, destination : destination  } : 
+        { type : type ,destination: { $exists: false }  }; // if the destination isn't specified or it's "any"
                                                            // it'll filter the data with NO destination
                                                            
         const rs = await ss
