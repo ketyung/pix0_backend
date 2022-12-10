@@ -20,7 +20,8 @@ const logger = (req : express.Request, _res : express.Response, _next : express.
 }
 
 
-const allowlist = ['http://localhost:3000', 'http://localhost:3001'];
+const allowlist = ['http://localhost:3000', 'http://localhost:3001',
+'https://test.pix0.xyz','https://pix0.xyz'];
 
 const corsOptionsDelegate = (req : express.Request, callback? : ( err? : Error, options? : {origin : boolean})=> void ) => {
 
@@ -82,7 +83,8 @@ const checkAccess = async (req : express.Request, res : express.Response, _next 
 const setHeaderAccessCtrls = (_req : express.Request, res : express.Response, _next : express.NextFunction) => {
 
     let orig =  _req.headers.origin;
-    let inAllowed =( orig !== undefined && orig.indexOf("http://localhost") !== -1)  || allowlist.indexOf(orig) !== -1;
+    let inAllowed =( orig !== undefined && orig.indexOf("http://localhost") !== -1)  
+    || allowlist.indexOf(orig) !== -1;
     if ( inAllowed ) {
         res.header("Access-Control-Allow-Origin", orig);
     }
@@ -110,14 +112,7 @@ class App {
         this.server.use (setHeaderAccessCtrls);
         this.server.use(express.json({limit: '5mb'}));
         this.server.use(express.urlencoded({limit: '5mb', extended: true}));
-      
-        /*
-        this.server.use( bodyParser.json({limit: '50mb'}) );
-        this.server.use(bodyParser.urlencoded({
-            limit: '50mb',extended: true, parameterLimit:50000
-        }));
-        */
-
+        
         this.server.use(cookieParser());
         this.server.use (logger);
         this.server.use(mongoSanitize());
