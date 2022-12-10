@@ -40,6 +40,6 @@ export const DELETE_OFFER_BY = "/delete_offer_by/:offer_id";
 
 export const GET_OFFERS = "/offers/:type/:destination?/:offset?/:limit?";
 
-export const CHECK_HAS_OFFER = "/has_offer/:type/:token_id";
+export const CHECK_HAS_OFFER = "/has_offer/:type/:token_id/:destination?";
 
 export const OBTAIN_JWT = "/get_jwt/:email?/:pass?";

@@ -182,7 +182,7 @@ routes
 .get(paths.CHECK_HAS_OFFER, async (_req, res)=>{
 
     let data  = await toff.hasOffer(_req.params.token_id, 
-        parseInt(_req.params.type)  );
+        parseInt(_req.params.type), _req.params.destination  );
     return res.json(data);
 })
 

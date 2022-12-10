@@ -107,12 +107,8 @@ export async function getOffersBy(type : OfferType,
 }
 
 
-/*
-This method is meant to check if it's a public offer
-which the destination (the account intended) is undefined or does NOT exist
-*/
 export async function hasOffer(
-    token_id : string, type : OfferType ) : Promise <{has_offer : boolean}|undefined>{
+    token_id : string, type : OfferType, destination? : string  ) : Promise <{has_offer : boolean}|undefined>{
 
     const client = new MongoClient(MONGO_URI);
 
@@ -122,7 +118,10 @@ export async function hasOffer(
         const database = client.db(DB);
         const ss = database.collection(TOKEN_OFFER);
 
-        const query = { "nft_token.NFTokenID" : token_id, type : type ,
+        const query = (destination && destination !== "any") ? 
+          { "nft_token.NFTokenID" : token_id, type : type ,
+        destination: destination  } :
+        { "nft_token.NFTokenID" : token_id, type : type ,
         destination: { $exists: false }  };
 
         const rs = await ss
