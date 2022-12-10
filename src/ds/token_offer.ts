@@ -2,7 +2,6 @@ import { MongoClient } from "./collection";
 import { MONGO_URI } from "./config";
 import { DB } from "./collection";
 import { Offer, OfferCreator, OfferType } from "../models";
-import { constructOfferId } from "../utils/xrp";
 
 
 const TOKEN_OFFER = "xnft_token_offer";
@@ -26,8 +25,6 @@ const TOKEN_OFFER = "xnft_token_offer";
         const ss = database.collection(TOKEN_OFFER);
         
         offer.date_created = new Date();
-
-        constructOfferId(offer.created_by.classic_address, offer.seq_num);
 
         await ss.insertOne(offer, async (err? : Error, _res? : string)=> {
          
