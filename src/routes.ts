@@ -124,15 +124,6 @@ routes
     });
    
 })
-/*
-.get(paths.RESET_MINT_INFO, async (req, res)=>{
-    
-    await cm.resetAllMintInfo(req.params.collection_id, (e, s)=>{
-        completion(res, s, e);
-    });
-   
-})*/
-
 .get(paths.GET_COLLECTION_MEDIA_BY, async (_req, res)=>{
 
     let data  = await cm.getCollectionMediaBy(
@@ -172,13 +163,14 @@ routes
     });
    
 })
-.post(paths.DELETE_OFFER, async (req, res)=>{
+.get(paths.DELETE_OFFER_BY, async (req, res)=>{
     
-    await toff.deleteOffer(req.body, (e, s)=>{
+    await toff.deleteOfferBy(req.params.offer_id, (e, s)=>{
         completion(res, s, e);
     });
    
 })
+
 .get(paths.GET_OFFERS, async (_req, res)=>{
 
     let data  = await toff.getOffersBy(

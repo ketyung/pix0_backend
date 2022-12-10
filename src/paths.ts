@@ -36,7 +36,7 @@ export const ADD_MINTERS_TO_GROUP = "/add_minters_to_group/";
 
 export const ADD_OFFER = "/add_offer/";
 
-export const DELETE_OFFER = "/delete_offer/";
+export const DELETE_OFFER_BY = "/delete_offer_by/:offer_id";
 
 export const GET_OFFERS = "/offers/:type/:offset?/:limit?";
 

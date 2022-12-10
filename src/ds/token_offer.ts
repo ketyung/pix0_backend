@@ -1,7 +1,7 @@
 import { MongoClient } from "./collection";
 import { MONGO_URI } from "./config";
 import { DB } from "./collection";
-import { Offer, OfferCreator, OfferType } from "../models";
+import { Offer, OfferType } from "../models";
 
 
 const TOKEN_OFFER = "xnft_token_offer";
@@ -41,11 +41,8 @@ const TOKEN_OFFER = "xnft_token_offer";
     }
 }
 
-
-export async function deleteOffer(
-    param : {token_id : string, 
-    type : OfferType,
-    creator : OfferCreator}, 
+export async function deleteOfferBy(
+    offer_id : string , 
     completion?: (err?: Error, res?: {deleted : boolean})=>void){
 
     const client = new MongoClient(MONGO_URI);
@@ -55,9 +52,7 @@ export async function deleteOffer(
         const database = client.db(DB);
         const ss = database.collection(TOKEN_OFFER);
     
-        const query = { "nft_token.NFTokenID" : param.token_id ,
-         type : param.type,  
-         created_by : param.creator };
+        const query = { offer_id : offer_id };
         
         await ss.deleteOne(query, async (err? : Error, _res? : string)=> {
         
@@ -73,6 +68,7 @@ export async function deleteOffer(
     }
 
 }
+
 
 
 
