@@ -182,6 +182,8 @@ export interface Offer {
 
     nft_token? : AccountNFToken,
 
+    destination? : string, // The AccountID for which this offer is intended
+
     price? : number, 
 
     remark? : string, 
