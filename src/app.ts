@@ -21,7 +21,7 @@ const logger = (req : express.Request, _res : express.Response, _next : express.
 
 
 const allowlist = ['http://localhost:3000', 'http://localhost:3001',
-'https://test.pix0.xyz','https://pix0.xyz'];
+'https://test.pix0.xyz','https://pix0.xyz','https://api.pix0.xyz'];
 
 const corsOptionsDelegate = (req : express.Request, callback? : ( err? : Error, options? : {origin : boolean})=> void ) => {
 

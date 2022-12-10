@@ -16,8 +16,6 @@ export function isAllowedUser ( user : User) : boolean {
     // for production mode in the future
     let list_of_users : User[] = JSON.parse(process.env.ALLOWED_USERS)  ;
 
-    console.log("users", list_of_users, ".user", user);
-
     let found_user = list_of_users.filter((u)=>{
 
         return (u.email === user.email && 
