@@ -184,6 +184,8 @@ export interface Offer {
 
     destination? : string, // The AccountID for which this offer is intended
 
+    seq_num? : string,
+    
     price? : number, 
 
     remark? : string, 
