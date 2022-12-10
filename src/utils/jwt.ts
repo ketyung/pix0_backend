@@ -10,20 +10,22 @@ export interface User {
 
 export function isAllowedUser ( user : User) : boolean {
 
+    // Just a temporary solution for checking the
+    // allowed API users. Non-production mode just for the 
+    // testing and dev mode. A better solution is needed
+    // for production mode in the future
     let list_of_users : User[] = JSON.parse(process.env.ALLOWED_USERS)  ;
 
-   for ( var r= 0; r < list_of_users.length; r++){
+    console.log("users", list_of_users, ".user", user);
 
-        let u = list_of_users[r];
+    let found_user = list_of_users.filter((u)=>{
 
-        if ( u.email === user.email && 
-            u.pass === user.pass) {
+        return (u.email === user.email && 
+        u.pass === user.pass);
+    })
 
-            return true;
-        }
-    }
+    return found_user.length === 1;
 
-    return false;
 }
 
 export function obtainJwtToken(user : User ) {
@@ -47,6 +49,7 @@ export function getJwtToken(user : User ) {
         {user : user}, 
         tokenKey,
         /*
+        // temporarily commented out for quick testing and dev
         {
             expiresIn: "2h",
         }*/
