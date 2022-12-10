@@ -57,17 +57,20 @@ const checkAccess = async (req : express.Request, res : express.Response, _next 
 
     if (req.headers !== undefined ) {
 
-        let token = req.headers['access_token'];
+        let token = req.headers['token'];
         
         let aTok = (token instanceof Array) ? token[0] : token;
         
         let valid = isValidJwtToken(aTok);
+
+       
         if ( valid.valid ) {
             _next();
         }
         else {
 
             res.status(401).json({error: "Unauthorized!", message : valid.error}).end();
+            console.log("_invalid.token...");
         }
     }
     else {
@@ -117,9 +120,12 @@ class App {
         this.server.use (logger);
         this.server.use(mongoSanitize());
        
+        this.server.use(checkAccess);
+       
+        /*
         if (process.env.REQUIRE_TO_CHECK_ACCESS) {
             this.server.use(checkAccess);
-        }    
+        }*/   
       
     }
 
