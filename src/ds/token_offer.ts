@@ -73,6 +73,7 @@ export async function deleteOfferBy(
 
 
 export async function getOffersBy(type : OfferType,
+    destination? : string, 
     offset? : number, limit? : number ) : Promise <any|undefined>{
 
     const client = new MongoClient(MONGO_URI);
@@ -83,8 +84,10 @@ export async function getOffersBy(type : OfferType,
         const database = client.db(DB);
         const ss = database.collection(TOKEN_OFFER);
       
-        const query = { type : type  };
-
+        const query = destination ? { type : type, destination : destination  } : 
+        { type : type ,destination: { $exists: false }  }; // if the destination isn't specified
+                                                           // it'll filter the data with NO destination
+                                                           
         const rs = await ss
                 .find(query)
                 .sort ( { date_created : -1})
@@ -103,7 +106,10 @@ export async function getOffersBy(type : OfferType,
 }
 
 
-
+/*
+This method is meant to check if it's a public offer
+which the destination (the account intended) is undefined or does NOT exist
+*/
 export async function hasOffer(
     token_id : string, type : OfferType ) : Promise <{has_offer : boolean}|undefined>{
 
@@ -115,7 +121,8 @@ export async function hasOffer(
         const database = client.db(DB);
         const ss = database.collection(TOKEN_OFFER);
 
-        const query = { "nft_token.NFTokenID" : token_id, type : type  };
+        const query = { "nft_token.NFTokenID" : token_id, type : type ,
+        destination: { $exists: false }  };
 
         const rs = await ss
         .findOne(query);

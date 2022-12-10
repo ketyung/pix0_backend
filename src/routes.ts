@@ -174,7 +174,9 @@ routes
 .get(paths.GET_OFFERS, async (_req, res)=>{
 
     let data  = await toff.getOffersBy(
-        parseInt(_req.params.type), parseInt(_req.params.offset), parseInt(_req.params.limit) );
+        parseInt(_req.params.type),
+        _req.params.destination,
+        parseInt(_req.params.offset), parseInt(_req.params.limit) );
     return res.json(data);
 })
 .get(paths.CHECK_HAS_OFFER, async (_req, res)=>{
