@@ -46,11 +46,9 @@ export function getJwtToken(user : User ) {
     const token = jwt.sign(
         {user : user}, 
         tokenKey,
-        /*
-        // temporarily commented out for quick testing and dev
         {
             expiresIn: "2h",
-        }*/
+        }
     );
 
   
