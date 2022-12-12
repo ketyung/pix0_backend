@@ -28,6 +28,8 @@ export const DELETE_COLLECTION_MEDIA = "/delete_collection_media/:media_id/:crea
 
 export const RANDOM_MEDIA_FOR_MINTING = "/random_media_for_minting/:collection_id/:minted_by?";
 
+export const AVAILABLE_MINT_COUNT = "/available_mint_count/:collection_id";
+
 export const REMOVE_MINT_INFO = "/remove_mint_info/:media_id/:minted_by?";
 
 export const ADD_COLLECTION_MINTER_GROUP = "/add_minter_group/";

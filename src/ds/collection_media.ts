@@ -222,6 +222,33 @@ export async function removeMintInfoOf( media_id : string, minted_by : string,
 }
 
 
+export async function availableMintCount ( collection_id : string,
+    completion?: (err?: Error, res? : {count: number })=>void){
+    
+    const client = new MongoClient(MONGO_URI);
+  
+    try {
+   
+        const database = client.db(DB);
+        const ss = database.collection(COLLECTION_MEDIA);
+
+        const query = { collection_id : collection_id , $or :[ {mint_info: { $exists: false } },
+        {mint_info : null}] };
+
+        let avail_medias_count = await ss.count(query);
+        
+        if ( completion){
+            completion(undefined, {count : avail_medias_count});
+        }
+        
+    }
+    finally {
+        await client.close();
+    }
+    
+}
+
+
 
 export async function randomMediaForMinting ( collection_id : string,
     minted_by? : string,  completion?: (err?: Error, res? : CollectionMedia)=>void){
@@ -233,7 +260,8 @@ export async function randomMediaForMinting ( collection_id : string,
         const database = client.db(DB);
         const ss = database.collection(COLLECTION_MEDIA);
 
-        const query = { collection_id : collection_id , mint_info: { $exists: false }  };
+        const query = { collection_id : collection_id , $or :[ {mint_info: { $exists: false } },
+        {mint_info : null}] };
 
       
         let avail_medias = await ss.find(query).toArray();

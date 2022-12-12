@@ -117,6 +117,13 @@ routes
     });
    
 })
+.get(paths.AVAILABLE_MINT_COUNT, async (req, res)=>{
+    
+    await cm.availableMintCount(req.params.collection_id, (e, s)=>{
+        completion(res, s, e);
+    });
+   
+})
 .get(paths.REMOVE_MINT_INFO, async (req, res)=>{
     
     await cm.removeMintInfoOf(req.params.media_id, req.params.minted_by, (e, s)=>{
