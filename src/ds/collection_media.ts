@@ -233,8 +233,8 @@ export async function availableMintCount ( collection_id : string,
         const ss = database.collection(COLLECTION_MEDIA);
 
         const query = { collection_id : collection_id , $or :[ {mint_info: { $exists: false } },
-        {mint_info : null}] };
-
+        {mint_info : null}, {mint_info : undefined}] }; 
+        
         let avail_medias_count = await ss.count(query);
         
         if ( completion){
@@ -261,7 +261,7 @@ export async function randomMediaForMinting ( collection_id : string,
         const ss = database.collection(COLLECTION_MEDIA);
 
         const query = { collection_id : collection_id , $or :[ {mint_info: { $exists: false } },
-        {mint_info : null}] };
+        {mint_info : null}, {mint_info : undefined}] };
 
       
         let avail_medias = await ss.find(query).toArray();
